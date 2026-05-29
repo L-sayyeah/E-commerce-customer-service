@@ -8,3 +8,4 @@ class AftersalesEligibilityResponse(BaseModel):
     resendable: bool
     requires_human_review: bool
     reasons: list[str]
+    ticket_no: str | None = None

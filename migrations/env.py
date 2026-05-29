@@ -12,6 +12,9 @@ from app.models.base import Base
 # 没有直接使用，但必须 import，否则 Alembic 扫描不到这个模型
 from app.models.chat import ChatSession, ChatMessage
 from app.models.order import Order
+from app.models.ticket import Ticket
+from app.models.ticket_log import TicketLog
+from app.models.knowledge import KnowledgeDocument, KnowledgeChunk
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

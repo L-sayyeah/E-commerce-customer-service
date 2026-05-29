@@ -8,6 +8,8 @@ from app.schemas.order import OrderResponse
 from app.services.order_service import OrderService
 from app.schemas.aftersales import AftersalesEligibilityResponse
 from app.services.aftersales_rule_service import AftersalesRuleService
+from app.schemas.ticket import CreateTicketRequest
+from app.services.ticket_service import TicketService
 
 router = APIRouter(prefix="/orders", tags=["order"])
 
@@ -54,6 +56,35 @@ async def get_aftersales_eligibility(order_no: str, db: AsyncSession = Depends(g
         )
     rule_service = AftersalesRuleService()
     result = rule_service.evaluate(order)
+
+    ticket_no: str | None = None
+
+    if result["requires_human_review"]:
+        issue_type = "resend" if result["resendable"] else "other"
+        ticket_service = TicketService(db)
+
+        existing_ticket = await ticket_service.get_open_ticket_by_order_and_issue(
+            order_no=order.order_no,
+            issue_type=issue_type
+        )
+        if existing_ticket is not None:
+            ticket_no = existing_ticket.ticket_no
+        else:
+            ticket = await ticket_service.create_ticket(
+                CreateTicketRequest(
+                    user_id=order.user_id,
+                    order_no=order.order_no,
+                    session_id=None,
+                    issue_type=issue_type,
+                    title=f"订单 {order.order_no} 需要人工审核",
+                    description="售后规则判断结果需要人工审核。原因："
+                                + "；".join(result["reasons"]),
+                    priority="medium",
+                    source="api",
+                )
+            )
+            ticket_no = ticket.ticket_no
+
     data = AftersalesEligibilityResponse(
         order_no=order.order_no,
         refundable=result["refundable"],
@@ -61,5 +92,6 @@ async def get_aftersales_eligibility(order_no: str, db: AsyncSession = Depends(g
         resendable=result["resendable"],
         requires_human_review=result["requires_human_review"],
         reasons=result["reasons"],
+        ticket_no=ticket_no
     )
     return success_response(data)

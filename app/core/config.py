@@ -3,7 +3,6 @@ from pathlib import Path
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
 BASE_DIR = Path(__file__).resolve().parents[2]
 ENV_FILE = BASE_DIR / ".env"
 
@@ -15,8 +14,28 @@ class Settings(BaseSettings):
 
     database_url: str = Field(min_length=1)
 
+    # 日志配置
     log_level: str = "INFO"
     log_file: str = "logs/app.log"
+
+    # Milvus 配置
+    milvus_host: str = "localhost"
+    milvus_port: int = 19530
+    milvus_collection: str = "knowledge_chunks"
+    milvus_vector_dim: int = 1536
+
+    # Dashscope 配置
+    dashscope_api_key: str | None = None
+
+    # ARK 配置
+    llm_api_key: str | None = None
+    llm_base_url: str = "https://ark.cn-beijing.volces.com/api/v3"
+    chat_model: str = "doubao-seed-2-0-lite-260428"
+    llm_temperature: float = 0.7
+
+    # embedding模型
+    embedding_model: str = "tongyi-embedding-vision-plus-2026-03-06"
+    embedding_dimensions: int = 1536
 
     model_config = SettingsConfigDict(
         env_file=ENV_FILE,
