@@ -32,7 +32,7 @@ def upgrade() -> None:
     sa.Column('description', sa.Text(), nullable=False, comment='工单描述'),
     sa.Column('priority', sa.String(length=32), nullable=False, comment='优先级：low/medium/high/urgent'),
     sa.Column('status', sa.String(length=32), nullable=False, comment='状态：open/in_progress/resolved/closed'),
-    sa.Column('source', sa.String(length=32), nullable=False, comment='来源：api/agent/admin'),
+    sa.Column('source', sa.String(length=32), nullable=False, comment='来源：api/agents/admin'),
     sa.Column('trace_id', sa.String(length=64), nullable=True, comment='链路追踪ID'),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False, comment='创建时间'),
     sa.Column('updated_at', sa.DateTime(), server_default=sa.text('now()'), nullable=False, comment='更新时间'),

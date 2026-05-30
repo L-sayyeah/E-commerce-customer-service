@@ -37,6 +37,8 @@ class Settings(BaseSettings):
     embedding_model: str = "tongyi-embedding-vision-plus-2026-03-06"
     embedding_dimensions: int = 1536
 
+    agent_intent_use_llm: bool = True
+
     model_config = SettingsConfigDict(
         env_file=ENV_FILE,
         env_file_encoding="utf-8",

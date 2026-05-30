@@ -1,5 +1,8 @@
+import json
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+from sse_starlette import EventSourceResponse
 
 from app.core.database import get_db
 from app.core.response import ApiResponse, success_response
@@ -86,7 +89,7 @@ async def search_knowledge(request: KnowledgeSearchRequest, db: AsyncSession = D
 @router.post("/rag", response_model=ApiResponse[RagAnswerResponse])
 async def rag_answer(request: RagQueryRequest, db: AsyncSession = Depends(get_db)):
     knowledge_service = KnowledgeService(db)
-    rag_service = RagService(knowledge_service)
+    rag_service = RagService(knowledge_service, db)
 
     result = await rag_service.answer(
         query=request.query,
@@ -109,3 +112,46 @@ async def rag_answer(request: RagQueryRequest, db: AsyncSession = Depends(get_db
     )
 
     return success_response(data)
+
+
+@router.post("/rag/stream")
+async def rag_answer_stream(request: RagQueryRequest, db: AsyncSession = Depends(get_db)):
+    knowledge_service = KnowledgeService(db)
+    rag_service = RagService(knowledge_service, db)
+
+    async def event_generator():
+        async for event in rag_service.stream_answer(query=request.query, top_k=request.top_k):
+            event_type = event["type"]
+
+            if event_type == "sources":
+                yield {
+                    "event": event_type,
+                    "data": json.dumps(
+                        {
+                            "sources": event["sources"]
+                        },
+                        ensure_ascii=False
+                    )
+                }
+            elif event_type == "token":
+                yield {
+                    "event": event_type,
+                    "data": json.dumps(
+                        {
+                            "content": event["content"]
+                        },
+                        ensure_ascii=False
+                    )
+                }
+            elif event_type == "done":
+                yield {
+                    "event": event_type,
+                    "data": json.dumps(
+                        {
+                            "message": "done"
+                        },
+                        ensure_ascii=False
+                    )
+                }
+
+    return EventSourceResponse(event_generator())

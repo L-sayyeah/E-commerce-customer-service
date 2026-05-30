@@ -65,7 +65,7 @@ class Ticket(Base, TimestampMixin):
         String(32),
         default="api",
         nullable=False,
-        comment="来源：api/agent/admin",
+        comment="来源：api/agents/admin",
     )
     trace_id: Mapped[str | None] = mapped_column(
         String(64),

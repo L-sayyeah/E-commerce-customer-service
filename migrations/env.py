@@ -15,6 +15,8 @@ from app.models.order import Order
 from app.models.ticket import Ticket
 from app.models.ticket_log import TicketLog
 from app.models.knowledge import KnowledgeDocument, KnowledgeChunk
+from app.models.rag_log import RagLog
+from app.models.agent_log import AgentRunLog, AgentNodeLog
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
