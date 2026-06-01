@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.knowledge import KnowledgeDocument, KnowledgeChunk
 from app.schemas.knowledge import CreateKnowledgeDocumentRequest
+from app.services.elasticsearch_service import ElasticsearchService
 from app.services.embedding_service import EmbeddingService
 from app.services.milvus_service import MilvusService
 
@@ -86,6 +87,23 @@ class KnowledgeService:
             milvus_vector_ids = milvus_service.insert_chunks(milvus_payloads)
             for chunk, vector_id in zip(chunks, milvus_vector_ids, strict=True):
                 chunk.milvus_vector_id = vector_id
+
+            elasticsearch_service = ElasticsearchService()
+            try:
+                await elasticsearch_service.index_chunks(
+                    [
+                        {
+                            "chunk_id": chunk.chunk_id,
+                            "document_id": chunk.document_id,
+                            "heading_path": chunk.heading_path,
+                            "content": chunk.content,
+                            "status": chunk.status,
+                        }
+                        for chunk in chunks
+                    ]
+                )
+            finally:
+                await elasticsearch_service.close()
 
         await self.db.commit()
         await self.db.refresh(document)
@@ -267,3 +285,76 @@ class KnowledgeService:
 
         logger.info(f"Knowledge search completed | query={query} | top_k={top_k} | result_count={len(results)}")
         return results
+
+    async def bm25_search(self, query: str, top_k: int = 5) -> list[dict]:
+        elasticsearch_service = ElasticsearchService()
+        try:
+            results = await elasticsearch_service.search_chunks(query=query, top_k=top_k)
+        finally:
+            await elasticsearch_service.close()
+
+        logger.info(f"BM25 search completed | query={query} | top_k={top_k} | result_count={len(results)}")
+
+        return results
+
+    async def hybrid_search(self, query: str, top_k: int = 5, vector_weight: float = 0.7) -> list[dict]:
+        bm25_weight = 1 - vector_weight
+
+        vector_results = await self.search(query=query, top_k=top_k)
+        bm25_results = await self.bm25_search(query=query, top_k=top_k)
+
+        max_bm25_score = max([item["score"] for item in bm25_results], default=0)
+
+        merged: dict[str, dict] = {}
+
+        for item in vector_results:
+            chunk_id = item["chunk_id"]
+            vector_score = max(0.0, min(1.0, float(item["score"] or 0)))
+
+            merged[chunk_id] = {
+                "chunk_id": chunk_id,
+                "document_id": item["document_id"],
+                "heading_path": item.get("heading_path"),
+                "content": item["content"],
+                "vector_score": vector_score,
+                "bm25_score": 0.0,
+                "match_type": "vector",
+            }
+
+        for item in bm25_results:
+            chunk_id = item["chunk_id"]
+            bm25_score = float(item["score"] or 0)
+
+            if max_bm25_score > 0:
+                bm25_score = bm25_score / max_bm25_score
+            else:
+                bm25_score = 0.0
+
+            if chunk_id in merged:
+                merged[chunk_id]["bm25_score"] = bm25_score
+                merged[chunk_id]["match_type"] = "hybrid"
+            else:
+                merged[chunk_id] = {
+                    "chunk_id": chunk_id,
+                    "document_id": item["document_id"],
+                    "heading_path": item.get("heading_path"),
+                    "content": item["content"],
+                    "vector_score": 0.0,
+                    "bm25_score": bm25_score,
+                    "match_type": "bm25",
+                }
+
+        results = []
+        for item in merged.values():
+            final_score = item["vector_score"] * vector_weight + item["bm25_score"] * bm25_weight
+            item["score"] = final_score
+            results.append(item)
+
+        results.sort(key=lambda item: item["score"], reverse=True)
+
+        logger.info(f"Hybrid search completed | query={query} | top_k={top_k}"
+                    f" | vector_result_count={len(vector_results)}"
+                    f" | bm25_result_count={len(bm25_results)}"
+                    f" | result_count={len(results)}")
+
+        return results[:top_k]

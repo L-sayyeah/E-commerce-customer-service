@@ -12,7 +12,7 @@ def setup_logging():
     log_path.parent.mkdir(parents=True, exist_ok=True)
 
     # 日志格式 时间 | 日志级别 | 记录器名称 | 文件名:行号 | 日志消息
-    log_format = "%(asctime)s - %(levelname)s - %(name)s - %(filename)s:%(lineno)d - %(message)s"
+    log_format = "%(asctime)s - %(levelname)s - %(name)s - %(funcName)s - %(filename)s:%(lineno)d -  - %(message)s"
 
     handlers: list[logging.Handler] = [
         logging.StreamHandler(sys.stdout),

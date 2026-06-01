@@ -1,9 +1,12 @@
 import json
 import re
 
+import logging
 from langchain_openai import ChatOpenAI
 
 from app.core.config import settings
+
+logger = logging.getLogger(__name__)
 
 ALLOWED_INTENTS = {
     "rag_qa",
@@ -44,7 +47,15 @@ class IntentClassifier:
             temperature=0
         )
 
-    async def classify(self, user_message: str) -> dict:
+    async def classify(self, user_message: str, recent_messages: list[dict] | None = None) -> dict:
+        context_result = self.context_classify(
+            user_message=user_message,
+            recent_messages=recent_messages
+        )
+
+        if context_result is not None:
+            return context_result
+
         if not settings.agent_intent_use_llm:
             return self.rule_classify(user_message)
 
@@ -132,3 +143,66 @@ class IntentClassifier:
             "reason": "rule fallback",
             "classifier": "rule",
         }
+
+    def is_order_no_only(self, text: str) -> bool:
+        order_no = extract_order_no(text)
+        if not order_no:
+            return False
+
+        normalized = re.sub(r"\s+", "", text.upper())
+        return normalized in {
+            order_no,
+            f"订单号{order_no}",
+            f"ORDER_NO：{order_no}"
+        }
+
+    def context_classify(self, user_message: str, recent_messages: list[dict]) -> dict | None:
+        order_no = extract_order_no(user_message)
+
+        if not order_no or not self.is_order_no_only(user_message):
+
+            return None
+
+        for message in reversed(recent_messages):
+            if message.get("role") != "user":
+                continue
+
+            content = message.get("content") or ""
+            logger.debug(f"context: {content}")
+
+            if self.is_order_no_only(content):
+                continue
+
+            if any(keyword in content for keyword in ["退款", "退货", "换货", "补发", "售后", "丢失", "没收到"]):
+                return {
+                    "intent": "aftersales_check",
+                    "order_no": order_no,
+                    "reason": "用户当前只补充订单号，根据上一轮售后诉求恢复为售后判断",
+                    "classifier": "context"
+                }
+
+            if any(
+                    keyword in content
+                    for keyword in ["订单", "物流", "到哪", "状态", "发货", "签收"]
+            ):
+                return {
+                    "intent": "order_query",
+                    "order_no": order_no,
+                    "reason": "用户当前只补充订单号，根据上一轮订单查询诉求恢复为订单查询",
+                    "classifier": "context",
+                }
+
+            if any(keyword in content for keyword in ["转人工", "人工客服", "投诉", "工单"]):
+                return {
+                    "intent": "ticket_create",
+                    "order_no": order_no,
+                    "reason": "用户当前只补充订单号，根据上一轮人工处理诉求恢复为工单创建",
+                    "classifier": "context",
+                }
+
+        return None
+
+
+if __name__ == "__main__":
+    classifier = IntentClassifier()
+    print(classifier.is_order_no_only("ORDER1001"))

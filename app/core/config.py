@@ -24,6 +24,11 @@ class Settings(BaseSettings):
     milvus_collection: str = "knowledge_chunks"
     milvus_vector_dim: int = 1536
 
+    # Elasticsearch 配置
+    elasticsearch_url: str = "http://127.0.0.1:9200"
+    elasticsearch_index: str = "knowledge_chunks"
+    elasticsearch_analyzer: str = "standard"
+
     # Dashscope 配置
     dashscope_api_key: str | None = None
 

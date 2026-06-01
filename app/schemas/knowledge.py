@@ -71,3 +71,43 @@ class RagAnswerResponse(BaseModel):
     query: str
     answer: str
     sources: list[RagSource]
+
+
+class KnowledgeBm25SearchRequest(BaseModel):
+    query: str = Field(min_length=1)
+    top_k: int = Field(default=5, ge=1, le=20)
+
+
+class KnowledgeBm25SearchResult(BaseModel):
+    chunk_id: str
+    document_id: str
+    heading_path: str | None
+    content: str
+    score: float
+
+
+class KnowledgeBm25SearchResponse(BaseModel):
+    query: str
+    results: list[KnowledgeBm25SearchResult]
+
+
+class KnowledgeHybridSearchRequest(BaseModel):
+    query: str = Field(min_length=1)
+    top_k: int = Field(default=5, ge=1, le=20)
+    vector_weight: float = Field(default=0.7, ge=0, le=1)
+
+
+class KnowledgeHybridSearchResult(BaseModel):
+    chunk_id: str
+    document_id: str
+    heading_path: str | None
+    content: str
+    score: float
+    vector_score: float
+    bm25_score: float
+    match_type: str
+
+
+class KnowledgeHybridSearchResponse(BaseModel):
+    query: str
+    results: list[KnowledgeHybridSearchResult]

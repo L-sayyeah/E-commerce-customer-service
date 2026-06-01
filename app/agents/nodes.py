@@ -38,8 +38,11 @@ class AgentNodes:
         self.db = db
 
     async def _classify_intent(self, state: AgentState) -> AgentState:
+        if state.get("intent"):
+            return state
+
         classifier = IntentClassifier()
-        result = await classifier.classify(state["user_message"])
+        result = await classifier.classify(state["user_message"], state.get("recent_messages", []))
 
         state["intent"] = result["intent"]
 

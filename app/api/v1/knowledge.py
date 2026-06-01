@@ -8,7 +8,9 @@ from app.core.database import get_db
 from app.core.response import ApiResponse, success_response
 from app.schemas.knowledge import KnowledgeDocumentResponse, CreateKnowledgeDocumentRequest, KnowledgeChunkResponse, \
     KnowledgeSearchResponse, KnowledgeSearchRequest, KnowledgeSearchResult, RagAnswerResponse, RagQueryRequest, \
-    RagSource
+    RagSource, KnowledgeBm25SearchResponse, KnowledgeBm25SearchRequest, KnowledgeBm25SearchResult, \
+    KnowledgeHybridSearchResponse, KnowledgeHybridSearchRequest, KnowledgeHybridSearchResult
+from app.services.elasticsearch_service import ElasticsearchService
 from app.services.knoewledge_service import KnowledgeService
 from app.services.milvus_service import MilvusService
 from app.services.rag_service import RagService
@@ -155,3 +157,62 @@ async def rag_answer_stream(request: RagQueryRequest, db: AsyncSession = Depends
                 }
 
     return EventSourceResponse(event_generator())
+
+
+@router.get("/search-engine/health", response_model=ApiResponse[dict])
+async def search_engine_health():
+    service = ElasticsearchService()
+
+    try:
+        result = await service.init_index()
+    finally:
+        await service.close()
+
+    return success_response(result)
+
+
+@router.post("/bm25-search", response_model=ApiResponse[KnowledgeBm25SearchResponse])
+async def bm25_search_knowledge(request: KnowledgeBm25SearchRequest, db: AsyncSession = Depends(get_db)):
+    service = KnowledgeService(db)
+    results = await service.bm25_search(query=request.query, top_k=request.top_k)
+
+    data = KnowledgeBm25SearchResponse(
+        query=request.query,
+        results=[
+            KnowledgeBm25SearchResult(
+                chunk_id=item["chunk_id"],
+                document_id=item["document_id"],
+                heading_path=item["heading_path"],
+                content=item["content"],
+                score=item["score"],
+            )
+            for item in results
+        ]
+    )
+
+    return success_response(data)
+
+
+@router.post("/hybrid-search", response_model=ApiResponse[KnowledgeHybridSearchResponse])
+async def hybrid_search_knowledge(request: KnowledgeHybridSearchRequest, db: AsyncSession = Depends(get_db)):
+    service = KnowledgeService(db)
+    results = await service.hybrid_search(query=request.query, top_k=request.top_k, vector_weight=request.vector_weight)
+
+    data = KnowledgeHybridSearchResponse(
+        query=request.query,
+        results=[
+            KnowledgeHybridSearchResult(
+                chunk_id=item["chunk_id"],
+                document_id=item["document_id"],
+                heading_path=item["heading_path"],
+                content=item["content"],
+                score=item["score"],
+                vector_score=item["vector_score"],
+                bm25_score=item["bm25_score"],
+                match_type=item["match_type"],
+            )
+            for item in results
+        ]
+    )
+
+    return success_response(data)

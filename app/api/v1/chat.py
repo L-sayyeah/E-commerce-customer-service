@@ -166,3 +166,89 @@ async def send_agent_message(request: SendMessageRequest, db: AsyncSession = Dep
         db.add(agent_log)
         await db.commit()
         raise
+
+
+@router.post("/agent/messages/stream")
+async def send_agent_message_stream(request: SendMessageRequest, db: AsyncSession = Depends(get_db)):
+    service = ChatService(db)
+
+    async def event_generator():
+        try:
+            async for event in service.stream_agent_message(request=request):
+                event_type = event["type"]
+
+                if event_type == "intent":
+                    yield {
+                        "event": event_type,
+                        "data": json.dumps(
+                            {
+                                "intent": event["intent"],
+                                "order_no": event.get("order_no"),
+                                "reason": event.get("reason"),
+                                "classifier": event.get("classifier"),
+                            },
+                            ensure_ascii=False,
+                        ),
+                    }
+                elif event_type == "sources":
+                    yield {
+                        "event": event_type,
+                        "data": json.dumps(
+                            {
+                                "sources": event["sources"]
+                            },
+                            ensure_ascii=False
+                        )
+                    }
+                elif event_type == "token":
+                    yield {
+                        "event": event_type,
+                        "data": json.dumps(
+                            {
+                                "content": event["content"]
+                            },
+                            ensure_ascii=False
+                        )
+                    }
+                elif event_type == "final":
+                    yield {
+                        "event": event_type,
+                        "data": json.dumps(
+                            {
+                                "user_message_id": event["user_message_id"],
+                                "assistant_message_id": event["assistant_message_id"],
+                                "intent": event["intent"],
+                                "order_no": event.get("order_no"),
+                                "ticket_no": event.get("ticket_no"),
+                                "answer": event["answer"],
+                                "sources": event["sources"],
+                            },
+                            ensure_ascii=False
+                        )
+                    }
+                elif event_type == "done":
+                    yield {
+                        "event": event_type,
+                        "data": json.dumps(
+                            {
+                                "user_message_id": event["user_message_id"],
+                                "assistant_message_id": event["assistant_message_id"],
+                                "intent": event["intent"],
+                                "order_no": event.get("order_no"),
+                                "sources": event["sources"],
+                            },
+                            ensure_ascii=False
+                        )
+                    }
+        except ValueError as exc:
+            yield {
+                "event": "error",
+                "data": json.dumps(
+                    {
+                        "message": str(exc)
+                    },
+                    ensure_ascii=False
+                )
+            }
+
+    return EventSourceResponse(event_generator())

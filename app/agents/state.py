@@ -5,6 +5,7 @@ class AgentState(TypedDict, total=False):
     session_id: str
     user_id: str | None
     user_message: str
+    recent_messages: list[dict[str, Any]]
 
     intent: str
     intent_reason: str | None
