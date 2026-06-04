@@ -40,6 +40,17 @@ class KnowledgeDocument(Base, TimestampMixin):
         nullable=False,
         comment="状态：active/inactive/deleted",
     )
+    index_status: Mapped[str] = mapped_column(
+        String(32),
+        default="pending",
+        nullable=False,
+        comment="索引状态：pending/indexing/active/failed",
+    )
+    index_error: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+        comment="索引失败原因",
+    )
     version: Mapped[int] = mapped_column(
         Integer,
         default=1,

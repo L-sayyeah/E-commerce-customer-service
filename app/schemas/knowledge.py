@@ -28,6 +28,8 @@ class KnowledgeDocumentResponse(BaseModel):
     source_type: str
     source_uri: str | None
     status: str
+    index_status: str
+    index_error: str | None
     version: int
     chunk_count: int
     created_at: datetime
@@ -65,12 +67,17 @@ class RagSource(BaseModel):
     heading_path: str | None
     content: str
     score: float
+    rerank_score: float | None = None
+    vector_score: float | None = None
+    bm25_score: float | None = None
+    match_type: str | None = None
 
 
 class RagAnswerResponse(BaseModel):
     query: str
     answer: str
     sources: list[RagSource]
+    retrieval_mode: str | None = None
 
 
 class KnowledgeBm25SearchRequest(BaseModel):
@@ -111,3 +118,33 @@ class KnowledgeHybridSearchResult(BaseModel):
 class KnowledgeHybridSearchResponse(BaseModel):
     query: str
     results: list[KnowledgeHybridSearchResult]
+
+
+class KnowledgeDocumentListItem(BaseModel):
+    document_id: str
+    title: str
+    source_type: str
+    source_uri: str | None
+    status: str
+    index_status: str
+    index_error: str | None
+    version: int
+    chunk_count: int
+    created_at: datetime
+    updated_at: datetime
+
+
+class KnowledgeDocumentDetailResponse(BaseModel):
+    document_id: str
+    title: str
+    source_type: str
+    source_uri: str | None
+    status: str
+    index_status: str
+    index_error: str | None
+    version: int
+    content_hash: str | None
+    chunk_count: int
+    created_at: datetime
+    updated_at: datetime
+    chunks: list[KnowledgeChunkResponse]

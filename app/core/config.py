@@ -26,6 +26,8 @@ class Settings(BaseSettings):
 
     # Elasticsearch 配置
     elasticsearch_url: str = "http://127.0.0.1:9200"
+    elasticsearch_username: str | None = None
+    elasticsearch_password: str | None = None
     elasticsearch_index: str = "knowledge_chunks"
     elasticsearch_analyzer: str = "standard"
 
@@ -43,6 +45,32 @@ class Settings(BaseSettings):
     embedding_dimensions: int = 1536
 
     agent_intent_use_llm: bool = True
+
+    # RAG 配置
+    rag_retrieval_mode: str = "hybrid"
+    hybrid_vector_weight: float = 0.7
+
+    # Rerank 配置
+    rag_rerank_enabled: bool = True
+    rag_retrieval_top_n: int = 20
+    rerank_model: str = "qwen3-vl-rerank"
+    rerank_top_n: int = 5
+    dashscope_rerank_url: str = (
+        "https://dashscope.aliyuncs.com/api/v1/services/rerank/text-rerank/text-rerank"
+    )
+
+    # MinerU 配置
+    mineru_api_key: str | None = None
+    mineru_base_url: str = "https://mineru.net/api/v4"
+    mineru_model_version: str = "vlm"
+    mineru_language: str = "ch"
+    mineru_enable_formula: bool = True
+    mineru_enable_table: bool = True
+    mineru_is_ocr: bool = False
+
+    # 知识库重试配置
+    knowledge_index_max_retries: int = 3
+    knowledge_index_retry_base_seconds: float = 1.0
 
     model_config = SettingsConfigDict(
         env_file=ENV_FILE,

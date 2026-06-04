@@ -11,7 +11,7 @@ from app.core.request_context import get_trace_id
 from app.core.response import success_response, ApiResponse
 from app.models.agent_log import AgentRunLog
 from app.schemas.chat import ChatSessionResponse, CreateChatSessionRequest, ChatMessageResponse, SendMessageRequest, \
-    ChatRagSource
+    ChatRagSource, AgentActionResponse
 from app.services.chat_service import ChatService
 
 router = APIRouter(prefix="/chat", tags=["chat"])
@@ -52,6 +52,17 @@ async def send_message(request: SendMessageRequest, db: AsyncSession = Depends(g
         assistant_message_id=assistant_message.id,
         assistant_content=assistant_message.content,
         intent=agent_result.get("intent"),
+        intent_reason=agent_result.get("intent_reason"),
+        intent_classifier=agent_result.get("intent_classifier"),
+        actions=[
+            AgentActionResponse(
+                tool=item["tool"],
+                status=item["status"],
+                summary=item["summary"],
+                metadata=item.get("metadata") or {},
+            )
+            for item in agent_result.get("actions", [])
+        ],
         order_no=agent_result.get("order_no"),
         ticket_no=agent_result.get("ticket_no"),
         sources=[
@@ -60,7 +71,11 @@ async def send_message(request: SendMessageRequest, db: AsyncSession = Depends(g
                 document_id=item["document_id"],
                 heading_path=item["heading_path"],
                 content=item["content"],
-                score=item["score"]
+                score=item["score"],
+                rerank_score=item.get("rerank_score"),
+                vector_score=item["vector_score"],
+                bm25_score=item["bm25_score"],
+                match_type=item["match_type"]
             )
             for item in sources
         ]
@@ -218,6 +233,9 @@ async def send_agent_message_stream(request: SendMessageRequest, db: AsyncSessio
                                 "user_message_id": event["user_message_id"],
                                 "assistant_message_id": event["assistant_message_id"],
                                 "intent": event["intent"],
+                                "intent_reason": event.get("intent_reason"),
+                                "intent_classifier": event.get("intent_classifier"),
+                                "actions": event.get("actions", []),
                                 "order_no": event.get("order_no"),
                                 "ticket_no": event.get("ticket_no"),
                                 "answer": event["answer"],
@@ -234,6 +252,9 @@ async def send_agent_message_stream(request: SendMessageRequest, db: AsyncSessio
                                 "user_message_id": event["user_message_id"],
                                 "assistant_message_id": event["assistant_message_id"],
                                 "intent": event["intent"],
+                                "intent_reason": event.get("intent_reason"),
+                                "intent_classifier": event.get("intent_classifier"),
+                                "actions": event.get("actions", []),
                                 "order_no": event.get("order_no"),
                                 "sources": event["sources"],
                             },

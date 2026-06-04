@@ -28,6 +28,17 @@ class ChatRagSource(BaseModel):
     heading_path: str | None
     content: str
     score: float
+    rerank_score: float | None = None
+    vector_score: float | None = None
+    bm25_score: float | None = None
+    match_type: str | None = None
+
+
+class AgentActionResponse(BaseModel):
+    tool: str
+    status: str
+    summary: str
+    metadata: dict = {}
 
 
 class ChatMessageResponse(BaseModel):
@@ -36,6 +47,9 @@ class ChatMessageResponse(BaseModel):
     assistant_message_id: int
     assistant_content: str
     intent: str | None = None
+    intent_reason: str | None = None
+    intent_classifier: str | None = None
     order_no: str | None = None
     ticket_no: str | None = None
     sources: list[ChatRagSource] = []
+    actions: list[AgentActionResponse] = []

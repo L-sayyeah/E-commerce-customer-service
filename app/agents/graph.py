@@ -16,6 +16,7 @@ def build_agent_graph(db: AsyncSession):
     workflow.add_node("aftersales_node", nodes.aftersales_node)
     workflow.add_node("ticket_node", nodes.ticket_node)
     workflow.add_node("clarify_node", nodes.clarify_node)
+    workflow.add_node("response_guard_node", nodes.response_guard_node)
 
     workflow.set_entry_point("classify_intent")
     workflow.add_conditional_edges(
@@ -29,11 +30,13 @@ def build_agent_graph(db: AsyncSession):
         }
     )
 
-    workflow.add_edge("rag_node", END)
-    workflow.add_edge("order_node", END)
-    workflow.add_edge("aftersales_node", END)
-    workflow.add_edge("ticket_node", END)
-    workflow.add_edge("clarify_node", END)
+    workflow.add_edge("rag_node", "response_guard_node")
+    workflow.add_edge("order_node", "response_guard_node")
+    workflow.add_edge("aftersales_node", "response_guard_node")
+    workflow.add_edge("ticket_node", "response_guard_node")
+    workflow.add_edge("clarify_node", "response_guard_node")
+
+    workflow.add_edge("response_guard_node", END)
 
     return workflow.compile()
 

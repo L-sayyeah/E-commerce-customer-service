@@ -41,6 +41,31 @@ class RagLog(Base, TimestampMixin):
         nullable=True,
         comment="模型名称",
     )
+    retrival_mode: Mapped[str | None] = mapped_column(
+        String(32),
+        nullable=True,
+        comment="检索模式：vector/hybrid"
+    )
+    rerank_enabled: Mapped[bool] = mapped_column(
+        default=False,
+        nullable=False,
+        comment="是否启用 rerank",
+    )
+    rerank_model: Mapped[str | None] = mapped_column(
+        String(128),
+        nullable=True,
+        comment="Rerank 模型名称",
+    )
+    rerank_status: Mapped[str | None] = mapped_column(
+        String(32),
+        nullable=True,
+        comment="Rerank 状态：disabled/success/failed_fallback",
+    )
+    rerank_error: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+        comment="Rerank 错误信息",
+    )
     status: Mapped[str] = mapped_column(
         String(32),
         default="success",

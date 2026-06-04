@@ -266,6 +266,16 @@ class ChatService:
                         "user_message_id": user_message.id,
                         "assistant_message_id": assistant_message.id,
                         "intent": intent,
+                        "intent_reason": classify_result.get("reason"),
+                        "intent_classifier": classify_result.get("classifier"),
+                        "actions": [
+                            {
+                                "tool": "rag_answer",
+                                "status": "success",
+                                "summary": f"streamed RAG answer with {len(sources)} sources",
+                                "metadata": {"source_count": len(sources)},
+                            }
+                        ],
                         "order_no": order_no,
                         "sources": sources,
                     }
@@ -306,6 +316,9 @@ class ChatService:
             "user_message_id": user_message.id,
             "assistant_message_id": assistant_message.id,
             "intent": agent_result.get("intent"),
+            "intent_reason": agent_result.get("intent_reason"),
+            "intent_classifier": agent_result.get("intent_classifier"),
+            "actions": agent_result.get("actions", []),
             "order_no": agent_result.get("order_no"),
             "ticket_no": agent_result.get("ticket_no"),
             "answer": assistant_message.content,

@@ -1,41 +1,22 @@
 import copy
 import json
 import time
-from decimal import Decimal
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.agents.guardrails import ResponseGuard
 from app.agents.intent_classifier import IntentClassifier, extract_order_no, ORDER_NO_PATTERN
 from app.agents.state import AgentState
 from app.core.request_context import get_trace_id
 from app.models.agent_log import AgentNodeLog
 from app.schemas.ticket import CreateTicketRequest
-from app.services.aftersales_rule_service import AftersalesRuleService
-from app.services.knoewledge_service import KnowledgeService
-from app.services.order_service import OrderService
-from app.services.rag_service import RagService
-from app.services.ticket_service import TicketService
-
-
-def serialize_order(order) -> dict:
-    return {
-        "order_no": order.order_no,
-        "user_id": order.user_id,
-        "platform": order.platform,
-        "country": order.country,
-        "currency": order.currency,
-        "total_amount": str(order.total_amount) if isinstance(order.total_amount, Decimal) else order.total_amount,
-        "payment_status": order.payment_status,
-        "fulfillment_status": order.fulfillment_status,
-        "logistics_status": order.logistics_status,
-        "shipped_at": order.shipped_at.isoformat() if order.shipped_at else None,
-        "delivered_at": order.delivered_at.isoformat() if order.delivered_at else None,
-    }
+from app.agents.tools import AgentTools
 
 
 class AgentNodes:
     def __init__(self, db: AsyncSession):
         self.db = db
+        self.tools = AgentTools(db)
 
     async def _classify_intent(self, state: AgentState) -> AgentState:
         if state.get("intent"):
@@ -55,17 +36,15 @@ class AgentNodes:
         return state
 
     async def classify_intent(self, state: AgentState) -> AgentState:
-        return await self._rub_with_log(
+        return await self._run_with_log(
             "classify_intent",
             state,
             self._classify_intent
         )
 
     async def _rag_node(self, state: AgentState) -> AgentState:
-        knowledge_service = KnowledgeService(self.db)
-        rag_service = RagService(knowledge_service, self.db)
-
-        result = await rag_service.answer(
+        result = await self.tools.rag_answer(
+            state=state,
             query=state["user_message"],
             top_k=5
         )
@@ -75,7 +54,7 @@ class AgentNodes:
         return state
 
     async def rag_node(self, state: AgentState) -> AgentState:
-        return await self._rub_with_log(
+        return await self._run_with_log(
             "rag_node",
             state,
             self._rag_node
@@ -89,14 +68,17 @@ class AgentNodes:
             state["answer"] = "请提供您的订单号， 我可以帮您查询订单状态。"
             return state
 
-        order_service = OrderService(self.db)
-        order = await order_service.get_by_order_no(order_no)
+        result = await self.tools.query_order(
+            state=state,
+            order_no=order_no
+        )
 
-        if order is None:
+        if result is None:
             state["answer"] = f"没有查询到订单{order_no}， 请检查订单号是否正确。"
             return state
+        order, serialize_order = result
 
-        state["order"] = serialize_order(order)
+        state["order"] = serialize_order
         state["answer"] = (
             f"已查询到订单 {order.order_no}："
             f"支付状态为 {order.payment_status}，"
@@ -106,7 +88,7 @@ class AgentNodes:
         return state
 
     async def order_node(self, state: AgentState) -> AgentState:
-        return await self._rub_with_log(
+        return await self._run_with_log(
             "order_node",
             state,
             self._order_node
@@ -119,50 +101,47 @@ class AgentNodes:
             state["answer"] = "请提供您的订单号，我可以帮您判断是否支持退款、换货或补发。"
             return state
 
-        order_service = OrderService(self.db)
-        order = await order_service.get_by_order_no(order_no)
+        order_result = await self.tools.query_order(
+            state=state,
+            order_no=order_no
+        )
 
-        if order is None:
+        if order_result is None:
             state["answer"] = f"没有查询到订单 {order_no}，请确认订单号是否正确。"
             return state
 
-        rule_service = AftersalesRuleService()
-        result = rule_service.evaluate(order)
+        order, serialized_order = order_result
 
-        state["order"] = serialize_order(order)
-        state["aftersales_result"] = result
+        aftersales_result = await self.tools.check_aftersales(
+            state=state,
+            order=order,
+        )
+
+        state["order"] = serialized_order
+        state["aftersales_result"] = aftersales_result
 
         ticket_no = None
-        if result["requires_human_review"]:
-            issue_type = "resend" if result["resendable"] else "other"
-            ticket_service = TicketService(self.db)
+        if aftersales_result["requires_human_review"]:
+            issue_type = "resend" if aftersales_result["resendable"] else "other"
 
-            existing_ticket = await ticket_service.get_open_ticket_by_order_and_issue(
-                order_no=order.order_no,
-                issue_type=issue_type,
+            ticket = await self.tools.create_or_get_ticket(
+                state=state,
+                request=CreateTicketRequest(
+                    user_id=order.user_id,
+                    order_no=order.order_no,
+                    session_id=state.get("session_id"),
+                    issue_type=issue_type,
+                    title=f"订单 {order.order_no} 需要人工审核",
+                    description="Agent 售后判断结果需要人工审核。原因：" + "；".join(aftersales_result["reasons"]),
+                    priority="medium",
+                    source="agent",
+                ),
+                dedupe_by_order_issue=True,
             )
-
-            if existing_ticket is not None:
-                ticket_no = existing_ticket.ticket_no
-            else:
-                ticket = await ticket_service.create_ticket(
-                    CreateTicketRequest(
-                        user_id=order.user_id,
-                        order_no=order.order_no,
-                        session_id=state.get("session_id"),
-                        issue_type=issue_type,
-                        title=f"订单 {order.order_no} 需要人工审核",
-                        description="Agent 售后判断结果需要人工审核。原因："
-                                    + "；".join(result["reasons"]),
-                        priority="medium",
-                        source="agents",
-                    )
-                )
-                ticket_no = ticket.ticket_no
-
+            ticket_no = ticket.ticket_no
             state["ticket_no"] = ticket_no
 
-        reason_text = "；".join(result["reasons"])
+        reason_text = "；".join(aftersales_result["reasons"])
 
         state["answer"] = (
             f"订单 {order.order_no} 的售后判断结果："
@@ -175,17 +154,16 @@ class AgentNodes:
         return state
 
     async def aftersales_node(self, state: AgentState) -> AgentState:
-        return await self._rub_with_log(
+        return await self._run_with_log(
             "aftersales_node",
             state,
             self._aftersales_node
         )
 
     async def _ticket_node(self, state: AgentState) -> AgentState:
-        ticket_service = TicketService(self.db)
-
-        ticket = await ticket_service.create_ticket(
-            CreateTicketRequest(
+        ticket = await self.tools.create_or_get_ticket(
+            state=state,
+            request=CreateTicketRequest(
                 user_id=state.get("user_id"),
                 order_no=state.get("order_no"),
                 session_id=state.get("session_id"),
@@ -193,8 +171,9 @@ class AgentNodes:
                 title="用户请求人工客服介入",
                 description=state["user_message"],
                 priority="medium",
-                source="agents",
-            )
+                source="agent",
+            ),
+            dedupe_by_order_issue=False,
         )
 
         state["ticket_no"] = ticket.ticket_no
@@ -202,7 +181,7 @@ class AgentNodes:
         return state
 
     async def ticket_node(self, state: AgentState) -> AgentState:
-        return await self._rub_with_log(
+        return await self._run_with_log(
             "ticket_node",
             state,
             self._ticket_node
@@ -213,7 +192,7 @@ class AgentNodes:
         return state
 
     async def clarify_node(self, state: AgentState) -> AgentState:
-        return await self._rub_with_log(
+        return await self._run_with_log(
             "clarify_node",
             state,
             self._clarify_node
@@ -245,7 +224,7 @@ class AgentNodes:
         self.db.add(node_log)
         await self.db.commit()
 
-    async def _rub_with_log(
+    async def _run_with_log(
             self,
             node_name: str,
             state: AgentState,
@@ -280,3 +259,36 @@ class AgentNodes:
                 error_message=str(exc)
             )
             raise
+
+    async def response_guard_node(self, state: AgentState) -> AgentState:
+        return await self._run_with_log(
+            "response_guard_node",
+            state,
+            self._response_guard_node
+        )
+
+    async def _response_guard_node(self, state: AgentState) -> AgentState:
+        answer = state.get("answer")
+
+        if not answer:
+            state["guard_checked"] = False
+            state["guard_safe"] = None
+            state["guard_reason"] = "answer is empty"
+            return state
+
+        guard = ResponseGuard()
+        result = await guard.check(
+            user_message=state["user_message"],
+            answer=answer,
+            intent=state.get("intent"),
+        )
+
+        state["guard_checked"] = True
+        state["guard_safe"] = result["safe"]
+        state["guard_reason"] = result.get("reason")
+
+        if not result["safe"] and result.get("rewritten_answer"):
+            state["original_answer"] = answer
+            state["answer"] = result["rewritten_answer"]
+
+        return state

@@ -18,4 +18,10 @@ class AgentState(TypedDict, total=False):
 
     answer: str
     sources: list[dict[str, Any]]
+    actions: list[dict[str, Any]]
     error: str | None
+
+    guard_checked: bool
+    guard_safe: bool | None
+    guard_reason: str | None
+    original_answer: str | None

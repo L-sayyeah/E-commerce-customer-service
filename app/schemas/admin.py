@@ -11,6 +11,11 @@ class RagLogResponse(BaseModel):
     sources_json: str | None
     top_k: int
     model_name: str | None
+    rerank_enabled: bool
+    rerank_model: str | None
+    rerank_status: str | None
+    rerank_error: str | None
+    retrieval_mode: str | None
     status: str
     error_message: str | None
     created_at: datetime

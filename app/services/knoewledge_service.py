@@ -1,11 +1,17 @@
+import asyncio
 import hashlib
 import json
 import re
+from collections.abc import Callable, Awaitable
+from typing import TypeVar
 from uuid import uuid4
 
 import logging
+
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.models.knowledge import KnowledgeDocument, KnowledgeChunk
 from app.schemas.knowledge import CreateKnowledgeDocumentRequest
 from app.services.elasticsearch_service import ElasticsearchService
@@ -13,6 +19,7 @@ from app.services.embedding_service import EmbeddingService
 from app.services.milvus_service import MilvusService
 
 logger = logging.getLogger(__name__)
+T = TypeVar("T")
 
 
 class KnowledgeService:
@@ -35,7 +42,9 @@ class KnowledgeService:
             title=request.title,
             source_type=request.source_type,
             source_uri=request.source_uri,
-            status="active",
+            status="inactive",
+            index_status="pending",
+            index_error=None,
             version=1,
             content_hash=content_hash
         )
@@ -43,77 +52,114 @@ class KnowledgeService:
         self.db.add(document)
         await self.db.flush()
 
-        # 把原文切成多个 chunk
-        chunk_payloads = self._split_markdown_with_fallback(request.content)
+        try:
+            document.index_status = "indexing"
+            await self.db.flush()
 
-        chunks: list[KnowledgeChunk] = []
-        for index, payload in enumerate(chunk_payloads):
-            chunk = KnowledgeChunk(
-                chunk_id=f"CHK{uuid4().hex[:16].upper()}",
-                document_id=document.document_id,
-                chunk_index=index,
-                content=payload["content"],
-                heading_path=payload.get("heading_path"),
-                token_count=self._estimate_token_count(payload["content"]),
-                metadata_json=json.dumps(
-                    {
-                        "title": request.title,
-                        "source_type": request.source_type,
-                        "heading_path": payload.get("heading_path"),
-                    },
-                    ensure_ascii=False,
-                ),
-                status="active",
-            )
-            self.db.add(chunk)
-            chunks.append(chunk)
+            # 把原文切成多个 chunk
+            chunk_payloads = self._split_markdown_with_fallback(request.content)
 
-        if chunks:
-            embedding_service = EmbeddingService()
-            milvus_service = MilvusService()
-
-            texts = [chunk.content for chunk in chunks]
-            embeddings = await embedding_service.embed_documents(texts)
-
-            milvus_payloads = []
-            for chunk, embedding in zip(chunks, embeddings, strict=True):
-                milvus_payloads.append({
-                    "chunk_id": chunk.chunk_id,
-                    "document_id": chunk.document_id,
-                    "heading_path": chunk.heading_path,
-                    "content": chunk.content,
-                    "embedding": embedding
-                })
-            milvus_vector_ids = milvus_service.insert_chunks(milvus_payloads)
-            for chunk, vector_id in zip(chunks, milvus_vector_ids, strict=True):
-                chunk.milvus_vector_id = vector_id
-
-            elasticsearch_service = ElasticsearchService()
-            try:
-                await elasticsearch_service.index_chunks(
-                    [
+            chunks: list[KnowledgeChunk] = []
+            for index, payload in enumerate(chunk_payloads):
+                chunk = KnowledgeChunk(
+                    chunk_id=f"CHK{uuid4().hex[:16].upper()}",
+                    document_id=document.document_id,
+                    chunk_index=index,
+                    content=payload["content"],
+                    heading_path=payload.get("heading_path"),
+                    token_count=self._estimate_token_count(payload["content"]),
+                    metadata_json=json.dumps(
                         {
-                            "chunk_id": chunk.chunk_id,
-                            "document_id": chunk.document_id,
-                            "heading_path": chunk.heading_path,
-                            "content": chunk.content,
-                            "status": chunk.status,
-                        }
-                        for chunk in chunks
-                    ]
+                            "title": request.title,
+                            "source_type": request.source_type,
+                            "heading_path": payload.get("heading_path"),
+                        },
+                        ensure_ascii=False,
+                    ),
+                    status="active",
                 )
-            finally:
+                self.db.add(chunk)
+                chunks.append(chunk)
+
+            await self.db.flush()
+            if chunks:
+                # milvus向量索引
+                embedding_service = EmbeddingService()
+                milvus_service = MilvusService()
+
+                texts = [chunk.content for chunk in chunks]
+                embeddings = await self._run_with_retry(
+                    "embedding",
+                    lambda: embedding_service.embed_documents(texts),
+                )
+
+                milvus_payloads = []
+                for chunk, embedding in zip(chunks, embeddings, strict=True):
+                    milvus_payloads.append({
+                        "chunk_id": chunk.chunk_id,
+                        "document_id": chunk.document_id,
+                        "heading_path": chunk.heading_path,
+                        "content": chunk.content,
+                        "embedding": embedding
+                    })
+
+                async def insert_milvus():
+                    return milvus_service.insert_chunks(milvus_payloads)
+                milvus_vector_ids = await self._run_with_retry(
+                    "milvus_insert",
+                    lambda: insert_milvus(),
+                )
+
+                for chunk, vector_id in zip(chunks, milvus_vector_ids, strict=True):
+                    chunk.milvus_vector_id = vector_id
+
+                # Elasticsearch索引
+                elasticsearch_service = ElasticsearchService()
+                await self._run_with_retry(
+                    "elasticsearch_index",
+                    lambda: elasticsearch_service.index_chunks(
+                        [
+                            {
+                                "chunk_id": chunk.chunk_id,
+                                "document_id": chunk.document_id,
+                                "heading_path": chunk.heading_path,
+                                "content": chunk.content,
+                                "status": chunk.status,
+                            }
+                            for chunk in chunks
+                        ]
+                    ),
+                )
                 await elasticsearch_service.close()
 
-        await self.db.commit()
-        await self.db.refresh(document)
+            document.status = "active"
+            document.index_status = "active"
+            document.index_error = None
 
-        for chunk in chunks:
-            await self.db.refresh(chunk)
+            await self.db.commit()
+            await self.db.refresh(document)
 
-        logger.info(f"Created knowledge document | document_id={document.document_id} | chunk_count = {len(chunks)}")
+            for chunk in chunks:
+                await self.db.refresh(chunk)
 
-        return document, chunks
+            logger.info(
+                f"Created knowledge document | document_id={document.document_id} | chunk_count = {len(chunks)}")
+
+            return document, chunks
+        except Exception as exc:
+            document.status = "inactive"
+            document.index_status = "failed"
+            document.index_error = str(exc)[:4000]
+
+            await self.db.commit()
+            await self.db.refresh(document)
+
+            logger.exception(
+                "Knowledge document indexing failed | document_id=%s",
+                document.document_id,
+            )
+
+            raise
 
     # 把原文档切成多个chunk
     def _split_markdown_with_fallback(self, content: str) -> list[dict]:
@@ -358,3 +404,231 @@ class KnowledgeService:
                     f" | result_count={len(results)}")
 
         return results[:top_k]
+
+    async def list_documents(
+            self,
+            status: str | None = None,
+            limit: int = 20,
+            offset: int = 0
+    ) -> list[dict]:
+        chunk_count_subquery = (
+            select(
+                KnowledgeChunk.document_id,
+                func.count(KnowledgeChunk.id).label("chunk_count"),
+            )
+            .group_by(KnowledgeChunk.document_id)
+            .subquery()
+        )
+
+        stmt = (
+            select(
+                KnowledgeDocument,
+                func.coalesce(chunk_count_subquery.c.chunk_count, 0).label("chunk_count"),
+            )
+            .outerjoin(
+                chunk_count_subquery,
+                KnowledgeDocument.document_id == chunk_count_subquery.c.document_id,
+            )
+            .order_by(KnowledgeDocument.id.desc())
+            .limit(limit)
+            .offset(offset)
+        )
+
+        if status:
+            stmt = stmt.where(KnowledgeDocument.status == status)
+
+        result = await self.db.execute(stmt)
+        return [
+            {
+                "document": row[0],
+                "chunk_count": row[1]
+            }
+            for row in result.all()
+        ]
+
+    async def get_document_detail(self, document_id: str) -> tuple[KnowledgeDocument, list[KnowledgeChunk]] | None:
+        document_stmt = select(KnowledgeDocument).where(KnowledgeDocument.document_id == document_id)
+
+        document_result = await self.db.execute(document_stmt)
+        document = document_result.scalar_one_or_none()
+
+        if document is None:
+            return None
+
+        chunks_stmt = (select(KnowledgeChunk).where(KnowledgeChunk.document_id == document_id)
+                       .order_by(KnowledgeChunk.chunk_index.asc()))
+        chunks_result = await self.db.execute(chunks_stmt)
+        chunks = list(chunks_result.scalars().all())
+
+        return document, chunks
+
+    async def _run_with_retry(self, operation_name: str, operation: Callable[[], Awaitable[T]]) -> T:
+        max_retries = settings.knowledge_index_max_retries
+        base_seconds = settings.knowledge_index_retry_base_seconds
+
+        last_error: Exception | None = None
+
+        for attempt in range(1, max_retries + 1):
+            try:
+                return await operation()
+
+            except Exception as exc:
+                last_error = exc
+
+                logger.warning(
+                    "Knowledge index operation failed | operation=%s | attempt=%s/%s | error=%s",
+                    operation_name,
+                    attempt,
+                    max_retries,
+                    exc,
+                )
+
+                if attempt >= max_retries:
+                    break
+
+                sleep_seconds = base_seconds * attempt
+                await asyncio.sleep(sleep_seconds)
+
+        raise RuntimeError(
+            f"Knowledge index operation failed after {max_retries} attempts: "
+            f"{operation_name}: {last_error}"
+        )
+
+    async def _index_chunks(
+            self,
+            document: KnowledgeDocument,
+            chunks: list[KnowledgeChunk],
+    ) -> None:
+        if not chunks:
+            return
+
+        embedding_service = EmbeddingService()
+        milvus_service = MilvusService()
+
+        texts = [chunk.content for chunk in chunks]
+
+        embeddings = await self._run_with_retry(
+            "embedding",
+            lambda: embedding_service.embed_documents(texts),
+        )
+
+        milvus_payloads = []
+        for chunk, embedding in zip(chunks, embeddings, strict=True):
+            milvus_payloads.append(
+                {
+                    "chunk_id": chunk.chunk_id,
+                    "document_id": chunk.document_id,
+                    "heading_path": chunk.heading_path,
+                    "content": chunk.content,
+                    "embedding": embedding,
+                }
+            )
+
+        async def insert_milvus():
+            return milvus_service.insert_chunks(milvus_payloads)
+
+        milvus_vector_ids = await self._run_with_retry(
+            "milvus_insert",
+            insert_milvus,
+        )
+
+        for chunk, vector_id in zip(chunks, milvus_vector_ids, strict=True):
+            chunk.milvus_vector_id = vector_id
+
+        elasticsearch_service = ElasticsearchService()
+        try:
+            await self._run_with_retry(
+                "elasticsearch_index",
+                lambda: elasticsearch_service.index_chunks(
+                    [
+                        {
+                            "chunk_id": chunk.chunk_id,
+                            "document_id": chunk.document_id,
+                            "heading_path": chunk.heading_path,
+                            "content": chunk.content,
+                            "status": chunk.status,
+                        }
+                        for chunk in chunks
+                    ]
+                ),
+            )
+        finally:
+            await elasticsearch_service.close()
+
+    async def retry_index_document(self, document_id: str) -> tuple[KnowledgeDocument, list[KnowledgeChunk]] | None:
+        document_stmt = select(KnowledgeDocument).where(
+            KnowledgeDocument.document_id == document_id,
+        )
+        document_result = await self.db.execute(document_stmt)
+        document = document_result.scalar_one_or_none()
+
+        if document is None:
+            return None
+
+        chunks_stmt = (
+            select(KnowledgeChunk)
+            .where(KnowledgeChunk.document_id == document_id)
+            .order_by(KnowledgeChunk.chunk_index.asc())
+        )
+        chunks_result = await self.db.execute(chunks_stmt)
+        chunks = list(chunks_result.scalars().all())
+
+        if document.index_status != "failed":
+            raise ValueError("Only failed knowledge documents can be retried")
+
+        if not chunks:
+            raise ValueError("Knowledge document has no chunks to retry")
+
+        document.status = "inactive"
+        document.index_status = "indexing"
+        document.index_error = None
+        await self.db.flush()
+
+        try:
+            milvus_service = MilvusService()
+            old_vector_ids = [
+                chunk.milvus_vector_id
+                for chunk in chunks
+                if chunk.milvus_vector_id
+            ]
+
+            try:
+                milvus_service.delete_by_ids(old_vector_ids)
+            except Exception as exc:
+                logger.warning(
+                    "Delete old Milvus vectors failed, continue retry | document_id=%s | error=%s",
+                    document.document_id,
+                    exc,
+                )
+
+            for chunk in chunks:
+                chunk.milvus_vector_id = None
+
+            await self._index_chunks(document, chunks)
+
+            document.status = "active"
+            document.index_status = "active"
+            document.index_error = None
+
+            await self.db.commit()
+            await self.db.refresh(document)
+
+            for chunk in chunks:
+                await self.db.refresh(chunk)
+
+            return document, chunks
+
+        except Exception as exc:
+            document.status = "inactive"
+            document.index_status = "failed"
+            document.index_error = str(exc)[:4000]
+
+            await self.db.commit()
+            await self.db.refresh(document)
+
+            logger.exception(
+                "Retry knowledge document indexing failed | document_id=%s",
+                document.document_id,
+            )
+
+            raise

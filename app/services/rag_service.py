@@ -11,6 +11,7 @@ from app.core.config import settings
 from app.core.request_context import get_trace_id
 from app.models.rag_log import RagLog
 from app.services.knoewledge_service import KnowledgeService
+from app.services.rerank_service import RerankService
 
 logger = logging.getLogger(__name__)
 
@@ -40,10 +41,17 @@ class RagService:
 
     async def answer(self, query: str, top_k: int = 5) -> dict:
         search_results: list[dict] = []
+        retrieval_top_n = max(settings.rag_retrieval_top_n, top_k)
 
         try:
-            search_results = await self.knowledge_service.search(
+            search_results = await self._retrieve_sources(
                 query=query,
+                top_k=retrieval_top_n
+            )
+
+            search_results, rerank_meta = await self._rerank_sources(
+                query=query,
+                sources=search_results,
                 top_k=top_k
             )
 
@@ -61,14 +69,18 @@ class RagService:
                 top_k=top_k,
                 sources=search_results,
                 answer=answer,
-                status="success"
+                status="success",
+                rerank_meta=rerank_meta,
+                retrieval_mode=settings.rag_retrieval_mode
             )
 
-            logger.info(f"RAG answer generated | trace_id: {get_trace_id()} | query: {query} | source_count: {len(search_results)}")
+            logger.info(
+                f"RAG answer generated | trace_id: {get_trace_id()} | query: {query} | source_count: {len(search_results)}")
             return {
                 "query": query,
                 "answer": answer,
-                "sources": search_results
+                "sources": search_results,
+                "retrieval_mode": settings.rag_retrieval_mode
             }
         except Exception as exc:
             await self._save_log(
@@ -77,6 +89,8 @@ class RagService:
                 sources=search_results,
                 answer=None,
                 status="failed",
+                rerank_meta = self._build_rerank_meta("disabled"),
+                retrieval_mode=settings.rag_retrieval_mode,
                 error_message=str(exc)
             )
             raise
@@ -85,10 +99,17 @@ class RagService:
         search_results: list[dict] = []
         rag_log: RagLog | None = None
         answer_parts: list[str] = []
+        retrieval_top_n = max(settings.rag_retrieval_top_n, top_k)
 
         try:
             search_results = await self.knowledge_service.search(
                 query=query,
+                top_k=retrieval_top_n
+            )
+
+            search_results, rerank_meta = await self._rerank_sources(
+                query=query,
+                sources=search_results,
                 top_k=top_k
             )
 
@@ -99,12 +120,15 @@ class RagService:
                 top_k=top_k,
                 sources=search_results,
                 answer=None,
-                status="success"
+                status="success",
+                rerank_meta=rerank_meta,
+                retrieval_mode=settings.rag_retrieval_mode
             )
 
             yield {
                 "type": "sources",
-                "sources": search_results
+                "sources": search_results,
+                "retrieval_mode": settings.rag_retrieval_mode
             }
 
             async for chunk in self.chain.astream({"query": query, "context": context}):
@@ -127,7 +151,8 @@ class RagService:
                 "type": "done"
             }
 
-            logger.info(f"RAG stream answer completed | trace_id: {get_trace_id()} | query: {query} | sources: {len(search_results)}")
+            logger.info(
+                f"RAG stream answer completed | trace_id: {get_trace_id()} | query: {query} | sources: {len(search_results)}")
         except Exception as exc:
             if rag_log is None:
                 await self._save_log(
@@ -136,6 +161,8 @@ class RagService:
                     sources=search_results,
                     answer=None,
                     status="failed",
+                    retrieval_mode=settings.rag_retrieval_mode,
+                    rerank_meta=self._build_rerank_meta("disabled"),
                     error_message=str(exc)
                 )
             else:
@@ -146,7 +173,6 @@ class RagService:
                     error_message=str(exc)
                 )
             raise
-
 
     def _build_context(self, results: list[dict]) -> str:
         if not results:
@@ -166,6 +192,42 @@ class RagService:
             )
         return "\n\n".join(blocks)
 
+    async def _retrieve_sources(self, query: str, top_k: int) -> list[dict]:
+        retrieval_mode = settings.rag_retrieval_mode.lower()
+
+        if retrieval_mode == "hybrid":
+            return await self.knowledge_service.hybrid_search(
+                query=query,
+                top_k=top_k,
+                vector_weight=settings.hybrid_vector_weight
+            )
+
+        return await self.knowledge_service.search(
+            query=query,
+            top_k=top_k
+        )
+
+    async def _rerank_sources(
+            self,
+            query: str,
+            sources: list[dict],
+            top_k: int
+    ) -> tuple[list[dict], dict]:
+        if not settings.rag_rerank_enabled:
+            return sources[:top_k], self._build_rerank_meta("disabled")
+
+        try:
+            rerank_service = RerankService()
+            reranked_sources = await rerank_service.rerank(
+                query=query,
+                documents=sources,
+                top_n=top_k
+            )
+            return reranked_sources, self._build_rerank_meta("success")
+        except Exception as exc:
+            logger.warning(f"Rerank failed, fallback to original sources | query={query} | error={exc}")
+            return sources[:top_k], self._build_rerank_meta("failed_fallback", error=str(exc))
+
     async def _save_log(
             self,
             query: str,
@@ -173,8 +235,11 @@ class RagService:
             sources: list[dict],
             answer: str | None,
             status: str = "success",
+            rerank_meta: dict | None = None,
+            retrieval_mode: str | None = None,
             error_message: str | None = None
     ):
+        rerank_meta = rerank_meta or self._build_rerank_meta("disabled")
         rag_log = RagLog(
             trace_id=get_trace_id(),
             query=query,
@@ -182,8 +247,13 @@ class RagService:
             sources_json=json.dumps(sources, ensure_ascii=False),
             top_k=top_k,
             model_name=settings.chat_model,
+            retrival_mode=retrieval_mode or settings.rag_retrieval_mode,
             status=status,
-            error_message=error_message
+            error_message=error_message,
+            rerank_enabled=rerank_meta["rerank_enabled"],
+            rerank_model=rerank_meta["rerank_model"],
+            rerank_status=rerank_meta["rerank_status"],
+            rerank_error=rerank_meta["rerank_error"],
         )
 
         self.db.add(rag_log)
@@ -204,3 +274,15 @@ class RagService:
         rag_log.error_message = error_message
 
         await self.db.commit()
+
+    def _build_rerank_meta(
+            self,
+            status: str,
+            error: str | None = None
+    ) -> dict:
+        return {
+            "rerank_enabled": settings.rag_rerank_enabled,
+            "rerank_model": settings.rerank_model if settings.rag_rerank_enabled else None,
+            "rerank_status": status,
+            "rerank_error": error,
+        }

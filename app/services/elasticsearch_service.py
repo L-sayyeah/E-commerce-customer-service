@@ -6,7 +6,10 @@ from app.core.config import settings
 
 class ElasticsearchService:
     def __init__(self):
-        self.client = AsyncElasticsearch(hosts=[settings.elasticsearch_url])
+        self.client = AsyncElasticsearch(
+            hosts=[settings.elasticsearch_url],
+            basic_auth=(settings.elasticsearch_username, settings.elasticsearch_password)
+        )
         self.index_name = settings.elasticsearch_index
         self.analyzer = settings.elasticsearch_analyzer
 

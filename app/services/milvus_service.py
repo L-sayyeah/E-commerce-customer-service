@@ -201,3 +201,14 @@ class MilvusService:
                 "content": hit.entity.get("content")
             })
         return hits
+
+    def delete_by_ids(self, ids: list[str]) -> None:
+        if not ids:
+            return
+
+        self.connect()
+        collection = Collection(self.collection_name)
+
+        id_values = ",".join(ids)
+        collection.delete(expr=f"id in [{id_values}]")
+        collection.flush()
