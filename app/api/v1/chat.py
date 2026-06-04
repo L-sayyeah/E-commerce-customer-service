@@ -143,12 +143,19 @@ async def send_agent_message(request: SendMessageRequest, db: AsyncSession = Dep
     graph = build_agent_graph(db)
 
     try:
+        config = {
+            "configurable": {
+                "thread_id": str(request.session_id),
+                "checkpoint_ns": ""
+            }
+        }
         result = await graph.ainvoke(
             {
                 "session_id": request.session_id,
                 "user_message": request.content,
                 "sources": []
-            }
+            },
+            config=config
         )
         agent_log = AgentRunLog(
             trace_id=get_trace_id(),

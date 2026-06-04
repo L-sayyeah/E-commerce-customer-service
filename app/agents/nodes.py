@@ -2,8 +2,10 @@ import copy
 import json
 import time
 
+from langgraph.types import interrupt
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.agents.context_builder import ContextBuilder
 from app.agents.guardrails import ResponseGuard
 from app.agents.intent_classifier import IntentClassifier, extract_order_no, ORDER_NO_PATTERN
 from app.agents.state import AgentState
@@ -292,3 +294,63 @@ class AgentNodes:
             state["answer"] = result["rewritten_answer"]
 
         return state
+
+    async def build_context_node(self, state: AgentState) -> dict:
+        builder = ContextBuilder()
+
+        context = builder.build(
+            user_message=state.get("user_message", ""),
+            recent_messages=state.get("recent_messages", [])
+        )
+
+        updates = {
+            **context
+        }
+
+        if context["memory_used"] and context["recent_order_no"] and not state.get("order_no"):
+            updates["order_no"] = context["recent_order_no"]
+
+        actions = list(state.get("actions") or [])
+        actions.append(
+            {
+                "tool": "context_builder",
+                "status": "success",
+                "summary": context["context_summary"],
+                "metadata": {
+                    "memory_used": context["memory_used"],
+                    "recent_order_no": context["recent_order_no"],
+                    "last_intent": context["last_intent"],
+                },
+            }
+        )
+        updates["actions"] = actions
+
+        return updates
+
+    async def human_review_node(self, state: AgentState) -> AgentState:
+        if not state.get("human_review_required"):
+            return {}
+
+        review_result = interrupt(
+            {
+                "type": "human_review",
+                "reason": state.get("human_review_reason"),
+                "order_no": state.get("order_no"),
+                "intent": state.get("intent"),
+                "answer": state.get("answer"),
+                "actions": state.get("actions", []),
+            }
+        )
+
+        return {
+            "human_review_result": review_result,
+            "actions": [
+                *state.get("actions", []),
+                {
+                    "tool": "human_review",
+                    "status": "approved" if review_result.get("approved") else "rejected",
+                    "summary": review_result.get("review_comment"),
+                    "metadata": review_result,
+                },
+            ],
+        }

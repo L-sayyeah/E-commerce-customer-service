@@ -25,3 +25,17 @@ class AgentState(TypedDict, total=False):
     guard_safe: bool | None
     guard_reason: str | None
     original_answer: str | None
+
+    # 上下文信息
+    recent_order_no: str | None
+    recent_ticket_id: int | None
+    last_intent: str | None
+    is_follow_up: bool
+    memory_used: bool
+    memory_reason: str | None
+    context_summary: str | None
+
+    human_review_required: bool
+    human_review_reason: str | None
+    human_review_payload: dict | None
+    human_review_result: dict | None

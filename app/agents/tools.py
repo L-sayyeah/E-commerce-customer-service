@@ -127,6 +127,10 @@ class AgentTools:
             service = AftersalesRuleService()
             result = service.evaluate(order)
 
+            if result.get("requires_human_review"):
+                state["human_review_required"] = True
+                state["human_review_reason"] = result.get("reasons")
+
             add_action(
                 state,
                 tool="check_aftersales",

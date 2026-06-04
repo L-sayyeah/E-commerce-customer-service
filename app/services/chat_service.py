@@ -58,6 +58,12 @@ class ChatService:
         await self.db.flush()
 
         graph = build_agent_graph(self.db)
+        config = {
+            "configurable": {
+                "thread_id": str(session.id),
+                "checkpoint_ns": ""
+            }
+        }
         agent_result = await graph.ainvoke(
             {
                 "session_id": request.session_id,
@@ -65,7 +71,8 @@ class ChatService:
                 "user_message": request.content,
                 "recent_messages": recent_messages,
                 "sources": []
-            }
+            },
+            config=config
         )
 
         assistant_message = ChatMessage(

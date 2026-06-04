@@ -72,6 +72,11 @@ class Settings(BaseSettings):
     knowledge_index_max_retries: int = 3
     knowledge_index_retry_base_seconds: float = 1.0
 
+    # checkpoint 配置
+    langgraph_checkpoint_enabled: bool = True
+    langgraph_checkpoint_backend: str = "mysql"
+    langgraph_checkpoint_db_uri: str | None = None
+
     model_config = SettingsConfigDict(
         env_file=ENV_FILE,
         env_file_encoding="utf-8",
