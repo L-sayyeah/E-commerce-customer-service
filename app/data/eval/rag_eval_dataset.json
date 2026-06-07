@@ -1,0 +1,632 @@
+[
+    {
+        "reference":  "美国地区订单在物流显示签收后30个自然日内可以申请退款或退货退款。",
+        "expected_doc":  "01_us_refund_return_policy.md",
+        "question":  "美国订单签收后多少天内可以申请退款？",
+        "expected_keywords":  [
+                                  "美国",
+                                  "30个自然日",
+                                  "退款"
+                              ]
+    },
+    {
+        "reference":  "用户主观原因退货时，退货运费通常由用户承担。",
+        "expected_doc":  "01_us_refund_return_policy.md",
+        "question":  "美国主观原因退货的运费由谁承担？",
+        "expected_keywords":  [
+                                  "主观原因",
+                                  "退货运费",
+                                  "用户承担"
+                              ]
+    },
+    {
+        "reference":  "商品存在质量或履约问题时，即使超过普通退货窗口，也可以进入人工审核。",
+        "expected_doc":  "01_us_refund_return_policy.md",
+        "question":  "美国订单超过30天但商品故障还能处理吗？",
+        "expected_keywords":  [
+                                  "超过",
+                                  "质量",
+                                  "人工审核"
+                              ]
+    },
+    {
+        "reference":  "欧盟地区消费者享有签收后14个自然日内无理由退货权利。",
+        "expected_doc":  "02_eu_consumer_return_policy.md",
+        "question":  "欧盟无理由退货期限是多久？",
+        "expected_keywords":  [
+                                  "欧盟",
+                                  "14个自然日",
+                                  "无理由退货"
+                              ]
+    },
+    {
+        "reference":  "定制商品、贴身卫生用品、已拆封个人护理用品、数字内容、易腐商品不适用无理由退货。",
+        "expected_doc":  "02_eu_consumer_return_policy.md",
+        "question":  "欧盟哪些商品不适用无理由退货？",
+        "expected_keywords":  [
+                                  "定制商品",
+                                  "贴身卫生用品",
+                                  "数字内容"
+                              ]
+    },
+    {
+        "reference":  "退货包裹完成仓库签收并质检通过后，平台通常在5到10个工作日内发起退款。",
+        "expected_doc":  "02_eu_consumer_return_policy.md",
+        "question":  "欧盟退货质检通过后多久发起退款？",
+        "expected_keywords":  [
+                                  "质检通过",
+                                  "5到10个工作日",
+                                  "退款"
+                              ]
+    },
+    {
+        "reference":  "英国地区普通商品支持签收后30天内退货。",
+        "expected_doc":  "03_uk_au_ca_return_policy.md",
+        "question":  "英国普通商品支持多久退货？",
+        "expected_keywords":  [
+                                  "英国",
+                                  "30天",
+                                  "退货"
+                              ]
+    },
+    {
+        "reference":  "澳洲地区商品存在重大缺陷时，用户可以申请退款、换货或维修。",
+        "expected_doc":  "03_uk_au_ca_return_policy.md",
+        "question":  "澳洲商品重大缺陷可以申请哪些处理？",
+        "expected_keywords":  [
+                                  "澳洲",
+                                  "重大缺陷",
+                                  "维修"
+                              ]
+    },
+    {
+        "reference":  "加拿大偏远地区物流延迟需要区分清关延迟、承运商延误和包裹丢失。",
+        "expected_doc":  "03_uk_au_ca_return_policy.md",
+        "question":  "加拿大物流延迟处理要区分哪些原因？",
+        "expected_keywords":  [
+                                  "加拿大",
+                                  "清关延迟",
+                                  "包裹丢失"
+                              ]
+    },
+    {
+        "reference":  "日本地区普通退货窗口为14天。",
+        "expected_doc":  "04_japan_korea_after_sales_policy.md",
+        "question":  "日本普通退货窗口是多久？",
+        "expected_keywords":  [
+                                  "日本",
+                                  "14天",
+                                  "退货"
+                              ]
+    },
+    {
+        "reference":  "韩国地区普通商品支持签收后7天内无理由退货。",
+        "expected_doc":  "04_japan_korea_after_sales_policy.md",
+        "question":  "韩国无理由退货期限是多久？",
+        "expected_keywords":  [
+                                  "韩国",
+                                  "7天",
+                                  "无理由退货"
+                              ]
+    },
+    {
+        "reference":  "若外包装轻微压痕但商品本体完好，通常不构成全额退款理由。",
+        "expected_doc":  "04_japan_korea_after_sales_policy.md",
+        "question":  "日本外包装轻微压痕能全额退款吗？",
+        "expected_keywords":  [
+                                  "外包装",
+                                  "轻微压痕",
+                                  "不构成全额退款"
+                              ]
+    },
+    {
+        "reference":  "标准物流包裹超过10个自然日没有轨迹更新，可以发起物流核查。",
+        "expected_doc":  "05_logistics_delay_policy.md",
+        "question":  "标准物流超过多少天未更新可以核查？",
+        "expected_keywords":  [
+                                  "标准物流",
+                                  "10个自然日",
+                                  "物流核查"
+                              ]
+    },
+    {
+        "reference":  "经济物流包裹超过15个自然日没有轨迹更新才进入异常处理。",
+        "expected_doc":  "05_logistics_delay_policy.md",
+        "question":  "经济物流超过多少天未更新进入异常处理？",
+        "expected_keywords":  [
+                                  "经济物流",
+                                  "15个自然日",
+                                  "异常处理"
+                              ]
+    },
+    {
+        "reference":  "DHL、UPS、FedEx等商业快递超过5个自然日无更新，应联系承运商确认原因。",
+        "expected_doc":  "05_logistics_delay_policy.md",
+        "question":  "DHL UPS FedEx超过多少天无更新应联系承运商？",
+        "expected_keywords":  [
+                                  "DHL",
+                                  "5个自然日",
+                                  "承运商"
+                              ]
+    },
+    {
+        "reference":  "物流核查结果分为继续运输、清关延迟、派送失败、退回发件地、确认丢失。",
+        "expected_doc":  "05_logistics_delay_policy.md",
+        "question":  "物流核查结果有哪些类型？",
+        "expected_keywords":  [
+                                  "继续运输",
+                                  "清关延迟",
+                                  "确认丢失"
+                              ]
+    },
+    {
+        "reference":  "物流商确认包裹丢失后，平台优先安排补发。",
+        "expected_doc":  "06_package_lost_damage_policy.md",
+        "question":  "物流商确认包裹丢失后优先怎么处理？",
+        "expected_keywords":  [
+                                  "包裹丢失",
+                                  "优先",
+                                  "补发"
+                              ]
+    },
+    {
+        "reference":  "包裹丢失订单金额超过300美元时需要人工审核。",
+        "expected_doc":  "06_package_lost_damage_policy.md",
+        "question":  "包裹丢失但订单超过300美元需要什么流程？",
+        "expected_keywords":  [
+                                  "包裹丢失",
+                                  "300美元",
+                                  "人工审核"
+                              ]
+    },
+    {
+        "reference":  "用户收到包裹破损后，需要在签收后7天内提供外包装照片、商品破损照片和物流面单照片。",
+        "expected_doc":  "06_package_lost_damage_policy.md",
+        "question":  "包裹破损需要在几天内提交哪些证据？",
+        "expected_keywords":  [
+                                  "7天",
+                                  "外包装照片",
+                                  "物流面单"
+                              ]
+    },
+    {
+        "reference":  "只是外包装轻微压痕且商品本体正常时，通常不支持全额退款。",
+        "expected_doc":  "06_package_lost_damage_policy.md",
+        "question":  "外包装轻微损伤但商品正常可以全额退款吗？",
+        "expected_keywords":  [
+                                  "外包装",
+                                  "商品本体",
+                                  "不支持全额退款"
+                              ]
+    },
+    {
+        "reference":  "目的国海关查验导致的清关延迟不属于平台直接责任。",
+        "expected_doc":  "07_customs_clearance_policy.md",
+        "question":  "海关查验导致清关延迟是谁的责任？",
+        "expected_keywords":  [
+                                  "海关查验",
+                                  "清关延迟",
+                                  "不属于平台直接责任"
+                              ]
+    },
+    {
+        "reference":  "进口税、关税、增值税或地方税费通常由目的国法规决定。",
+        "expected_doc":  "07_customs_clearance_policy.md",
+        "question":  "进口税费通常由谁决定？",
+        "expected_keywords":  [
+                                  "进口税",
+                                  "目的国法规",
+                                  "税费"
+                              ]
+    },
+    {
+        "reference":  "客服应提供订单发票、商品信息和支付凭证下载方式。",
+        "expected_doc":  "07_customs_clearance_policy.md",
+        "question":  "海关要求补充资料时客服应提供什么？",
+        "expected_keywords":  [
+                                  "订单发票",
+                                  "商品信息",
+                                  "支付凭证"
+                              ]
+    },
+    {
+        "reference":  "用户拒绝缴税导致包裹退回，退款需要扣除已产生的运费、税费或仓储费。",
+        "expected_doc":  "07_customs_clearance_policy.md",
+        "question":  "用户拒绝缴税导致退回可以全额退款吗？",
+        "expected_keywords":  [
+                                  "拒绝缴税",
+                                  "扣除",
+                                  "仓储费"
+                              ]
+    },
+    {
+        "reference":  "无法开机、无法充电、蓝牙无法连接、屏幕异常、按键失灵、严重发热、配件缺失等可视为质量问题。",
+        "expected_doc":  "08_electronics_quality_policy.md",
+        "question":  "电子产品哪些情况属于质量问题？",
+        "expected_keywords":  [
+                                  "无法开机",
+                                  "无法充电",
+                                  "严重发热"
+                              ]
+    },
+    {
+        "reference":  "用户需要提供订单号、故障视频、充电或连接过程视频、商品序列号或包装照片。",
+        "expected_doc":  "08_electronics_quality_policy.md",
+        "question":  "电子产品质量问题需要哪些证据？",
+        "expected_keywords":  [
+                                  "故障视频",
+                                  "商品序列号",
+                                  "包装照片"
+                              ]
+    },
+    {
+        "reference":  "电子产品签收后45天内发现质量问题，可以申请换货或退款。",
+        "expected_doc":  "08_electronics_quality_policy.md",
+        "question":  "电子产品签收后多久内质量问题可换货或退款？",
+        "expected_keywords":  [
+                                  "电子产品",
+                                  "45天",
+                                  "换货"
+                              ]
+    },
+    {
+        "reference":  "用户摔落、进水、私自拆修或使用不兼容充电器导致损坏，不属于免费售后范围。",
+        "expected_doc":  "08_electronics_quality_policy.md",
+        "question":  "用户摔落电子产品导致损坏是否免费售后？",
+        "expected_keywords":  [
+                                  "摔落",
+                                  "不兼容充电器",
+                                  "不属于免费售后"
+                              ]
+    },
+    {
+        "reference":  "用户因个人尺码选择错误申请退货，通常退货运费由用户承担。",
+        "expected_doc":  "09_apparel_size_return_policy.md",
+        "question":  "服饰尺码选择错误退货运费谁承担？",
+        "expected_keywords":  [
+                                  "尺码选择错误",
+                                  "退货运费",
+                                  "用户承担"
+                              ]
+    },
+    {
+        "reference":  "如果商品页面尺码表错误或实物尺寸与页面标注明显不符，平台应承担责任。",
+        "expected_doc":  "09_apparel_size_return_policy.md",
+        "question":  "商品页面尺码表错误如何处理？",
+        "expected_keywords":  [
+                                  "尺码表错误",
+                                  "平台承担责任",
+                                  "换码"
+                              ]
+    },
+    {
+        "reference":  "鞋类商品若鞋底明显磨损，仓库可能拒绝退款或扣除折损费。",
+        "expected_doc":  "09_apparel_size_return_policy.md",
+        "question":  "鞋底明显磨损退货会怎样？",
+        "expected_keywords":  [
+                                  "鞋底明显磨损",
+                                  "拒绝退款",
+                                  "折损费"
+                              ]
+    },
+    {
+        "reference":  "轻微色差通常不构成质量问题。",
+        "expected_doc":  "09_apparel_size_return_policy.md",
+        "question":  "轻微色差是否构成质量问题？",
+        "expected_keywords":  [
+                                  "轻微色差",
+                                  "不构成",
+                                  "质量问题"
+                              ]
+    },
+    {
+        "reference":  "美妆、护肤、贴身护理、耳机耳塞类卫生商品一旦拆封，通常不支持无理由退货。",
+        "expected_doc":  "10_beauty_hygiene_policy.md",
+        "question":  "美妆个护商品拆封后能无理由退货吗？",
+        "expected_keywords":  [
+                                  "美妆",
+                                  "拆封",
+                                  "不支持无理由退货"
+                              ]
+    },
+    {
+        "reference":  "用户反馈过敏或不适时，客服不能直接判断产品有质量问题，应收集批次号、照片、使用时间和症状描述。",
+        "expected_doc":  "10_beauty_hygiene_policy.md",
+        "question":  "用户反馈过敏时客服能直接判定质量问题吗？",
+        "expected_keywords":  [
+                                  "过敏",
+                                  "不能直接判断",
+                                  "批次号"
+                              ]
+    },
+    {
+        "reference":  "若用户收到临期或过期商品，平台应优先退款或补发，并记录库存批次问题。",
+        "expected_doc":  "10_beauty_hygiene_policy.md",
+        "question":  "收到临期或过期商品应该怎么处理？",
+        "expected_keywords":  [
+                                  "临期",
+                                  "过期",
+                                  "库存批次"
+                              ]
+    },
+    {
+        "reference":  "刻字、定制尺寸、个性化图案等定制商品通常不支持无理由退货。",
+        "expected_doc":  "11_customized_goods_policy.md",
+        "question":  "定制商品是否支持无理由退货？",
+        "expected_keywords":  [
+                                  "定制商品",
+                                  "不支持",
+                                  "无理由退货"
+                              ]
+    },
+    {
+        "reference":  "电子礼品卡、下载码、数字课程、软件授权等数字内容，一经发送或激活通常不可退款。",
+        "expected_doc":  "11_customized_goods_policy.md",
+        "question":  "数字礼品卡激活后可以退款吗？",
+        "expected_keywords":  [
+                                  "数字内容",
+                                  "激活",
+                                  "不可退款"
+                              ]
+    },
+    {
+        "reference":  "特殊品类售后要优先核查商品类型、是否拆封、是否激活、是否定制。",
+        "expected_doc":  "11_customized_goods_policy.md",
+        "question":  "特殊品类售后要先核查什么？",
+        "expected_keywords":  [
+                                  "商品类型",
+                                  "是否拆封",
+                                  "是否定制"
+                              ]
+    },
+    {
+        "reference":  "信用卡退款通常在平台发起后3到10个工作日到账。",
+        "expected_doc":  "12_payment_refund_timeline_policy.md",
+        "question":  "信用卡退款通常多久到账？",
+        "expected_keywords":  [
+                                  "信用卡",
+                                  "3到10个工作日",
+                                  "到账"
+                              ]
+    },
+    {
+        "reference":  "PayPal退款通常在1到5个工作日内完成。",
+        "expected_doc":  "12_payment_refund_timeline_policy.md",
+        "question":  "PayPal退款一般多久到账？",
+        "expected_keywords":  [
+                                  "PayPal",
+                                  "1到5个工作日",
+                                  "退款"
+                              ]
+    },
+    {
+        "reference":  "超过15个工作日仍未到账时，客服需要引导用户提供支付流水并创建工单。",
+        "expected_doc":  "12_payment_refund_timeline_policy.md",
+        "question":  "本地支付超过15个工作日未到账怎么办？",
+        "expected_keywords":  [
+                                  "15个工作日",
+                                  "支付流水",
+                                  "创建工单"
+                              ]
+    },
+    {
+        "reference":  "轻微瑕疵、配件缺失但不影响主体使用、物流延迟但用户仍愿意保留商品，可以协商部分退款。",
+        "expected_doc":  "12_payment_refund_timeline_policy.md",
+        "question":  "哪些情况可以协商部分退款？",
+        "expected_keywords":  [
+                                  "轻微瑕疵",
+                                  "配件缺失",
+                                  "部分退款"
+                              ]
+    },
+    {
+        "reference":  "用户已经发起信用卡拒付后，客服不能重复承诺退款。",
+        "expected_doc":  "13_payment_dispute_chargeback_policy.md",
+        "question":  "信用卡拒付后客服还能重复承诺退款吗？",
+        "expected_keywords":  [
+                                  "信用卡拒付",
+                                  "不能重复承诺退款",
+                                  "争议工单"
+                              ]
+    },
+    {
+        "reference":  "PayPal争议开启后，客服应避免在普通聊天中承诺额外退款，并引导用户查看争议中心进度。",
+        "expected_doc":  "13_payment_dispute_chargeback_policy.md",
+        "question":  "PayPal争议开启后普通客服应该怎么处理？",
+        "expected_keywords":  [
+                                  "PayPal争议",
+                                  "避免承诺",
+                                  "争议中心"
+                              ]
+    },
+    {
+        "reference":  "同一订单不能同时走平台退款和支付渠道争议赔付，系统需要避免重复赔付。",
+        "expected_doc":  "13_payment_dispute_chargeback_policy.md",
+        "question":  "为什么同一订单不能同时平台退款和支付争议赔付？",
+        "expected_keywords":  [
+                                  "同一订单",
+                                  "支付渠道争议",
+                                  "重复赔付"
+                              ]
+    },
+    {
+        "reference":  "支付争议需要准备物流签收证明、沟通记录、商品页面快照、退款记录和用户提交证据。",
+        "expected_doc":  "13_payment_dispute_chargeback_policy.md",
+        "question":  "支付争议需要准备哪些证据材料？",
+        "expected_keywords":  [
+                                  "物流签收证明",
+                                  "沟通记录",
+                                  "商品页面快照"
+                              ]
+    },
+    {
+        "reference":  "high工单需要在4小时内首次响应。",
+        "expected_doc":  "14_ticket_priority_sla_policy.md",
+        "question":  "high优先级工单多久首次响应？",
+        "expected_keywords":  [
+                                  "high",
+                                  "4小时",
+                                  "首次响应"
+                              ]
+    },
+    {
+        "reference":  "urgent工单需要在1小时内响应并升级主管。",
+        "expected_doc":  "14_ticket_priority_sla_policy.md",
+        "question":  "urgent工单多久响应并升级主管？",
+        "expected_keywords":  [
+                                  "urgent",
+                                  "1小时",
+                                  "升级主管"
+                              ]
+    },
+    {
+        "reference":  "同一用户、同一订单、同一售后类型在未关闭状态下重复提交时，不应创建新工单，应复用原工单。",
+        "expected_doc":  "14_ticket_priority_sla_policy.md",
+        "question":  "重复提交同一订单售后工单应该创建新工单吗？",
+        "expected_keywords":  [
+                                  "重复提交",
+                                  "不应创建新工单",
+                                  "复用原工单"
+                              ]
+    },
+    {
+        "reference":  "订单金额超过300美元、证据不完整但用户要求退款、物流商未确认丢失、高频退款用户、地址风险、支付争议等需要人工审核。",
+        "expected_doc":  "15_human_review_sop.md",
+        "question":  "哪些条件会触发人工审核？",
+        "expected_keywords":  [
+                                  "300美元",
+                                  "证据不完整",
+                                  "人工审核"
+                              ]
+    },
+    {
+        "reference":  "审核材料包括订单号、用户诉求、商品信息、金额、物流状态、证据链接、系统规则判断、客服建议方案和历史工单记录。",
+        "expected_doc":  "15_human_review_sop.md",
+        "question":  "人工审核材料包括哪些内容？",
+        "expected_keywords":  [
+                                  "订单号",
+                                  "系统规则判断",
+                                  "历史工单记录"
+                              ]
+    },
+    {
+        "reference":  "Agent在命中高风险条件时，不应直接承诺退款或补发，应说明需要人工审核，并创建或复用工单。",
+        "expected_doc":  "15_human_review_sop.md",
+        "question":  "Agent命中高风险条件时应该直接退款吗？",
+        "expected_keywords":  [
+                                  "高风险",
+                                  "不应直接承诺",
+                                  "复用工单"
+                              ]
+    },
+    {
+        "reference":  "物流延迟话术应说明会发起物流核查，并在确认丢失后根据政策提供补发或退款方案。",
+        "expected_doc":  "16_customer_reply_templates.md",
+        "question":  "物流延迟客服话术应该包含什么？",
+        "expected_keywords":  [
+                                  "物流核查",
+                                  "确认丢失",
+                                  "补发或退款"
+                              ]
+    },
+    {
+        "reference":  "质量问题话术应引导用户提供商品问题照片或视频、外包装照片和订单号。",
+        "expected_doc":  "16_customer_reply_templates.md",
+        "question":  "质量问题话术应该引导用户提供什么？",
+        "expected_keywords":  [
+                                  "照片或视频",
+                                  "外包装照片",
+                                  "订单号"
+                              ]
+    },
+    {
+        "reference":  "所有售后请求都应尽量收集订单号、商品照片、问题描述和物流面单。",
+        "expected_doc":  "17_evidence_collection_policy.md",
+        "question":  "售后基础证据包括什么？",
+        "expected_keywords":  [
+                                  "订单号",
+                                  "商品照片",
+                                  "物流面单"
+                              ]
+    },
+    {
+        "reference":  "证据不足时，客服不能直接承诺退款，应要求用户补充材料。",
+        "expected_doc":  "17_evidence_collection_policy.md",
+        "question":  "证据不足时客服能直接承诺退款吗？",
+        "expected_keywords":  [
+                                  "证据不足",
+                                  "不能直接承诺退款",
+                                  "补充材料"
+                              ]
+    },
+    {
+        "reference":  "退货包裹到达仓库后，需要扫描退货单号并关联原订单。",
+        "expected_doc":  "18_warehouse_return_inspection_policy.md",
+        "question":  "退货包裹到仓库后如何关联订单？",
+        "expected_keywords":  [
+                                  "退货单号",
+                                  "关联原订单",
+                                  "仓库"
+                              ]
+    },
+    {
+        "reference":  "只有仓库签收并质检通过后，系统才应发起退款。",
+        "expected_doc":  "18_warehouse_return_inspection_policy.md",
+        "question":  "仓库质检通过后才会触发什么？",
+        "expected_keywords":  [
+                                  "仓库签收",
+                                  "质检通过",
+                                  "发起退款"
+                              ]
+    },
+    {
+        "reference":  "轻微物流延迟、外包装轻微破损、用户体验不佳但不构成退款条件时，可以提供优惠券作为安抚补偿。",
+        "expected_doc":  "19_promotion_coupon_compensation_policy.md",
+        "question":  "什么情况下可以提供优惠券补偿？",
+        "expected_keywords":  [
+                                  "轻微物流延迟",
+                                  "优惠券",
+                                  "安抚补偿"
+                              ]
+    },
+    {
+        "reference":  "超过30美元的补偿、超过订单金额20%的部分退款、重复补偿用户，需要人工审核。",
+        "expected_doc":  "19_promotion_coupon_compensation_policy.md",
+        "question":  "超过30美元的补偿需要什么？",
+        "expected_keywords":  [
+                                  "30美元",
+                                  "20%",
+                                  "人工审核"
+                              ]
+    },
+    {
+        "reference":  "VIP用户的售后请求应优先处理，普通售后可以提升为high优先级工单。",
+        "expected_doc":  "20_vip_social_complaint_policy.md",
+        "question":  "VIP用户售后请求如何设置优先级？",
+        "expected_keywords":  [
+                                  "VIP用户",
+                                  "优先处理",
+                                  "high"
+                              ]
+    },
+    {
+        "reference":  "用户在社交媒体公开投诉时，客服需要创建high优先级工单。",
+        "expected_doc":  "20_vip_social_complaint_policy.md",
+        "question":  "社媒公开投诉应该创建什么优先级工单？",
+        "expected_keywords":  [
+                                  "社交媒体",
+                                  "公开投诉",
+                                  "high优先级"
+                              ]
+    },
+    {
+        "reference":  "客服可以表达歉意和处理意愿，但不能在公开渠道承诺超出政策的退款、补偿或赔付。",
+        "expected_doc":  "20_vip_social_complaint_policy.md",
+        "question":  "公开渠道客服能承诺超出政策的赔付吗？",
+        "expected_keywords":  [
+                                  "公开渠道",
+                                  "不能承诺",
+                                  "超出政策"
+                              ]
+    }
+]

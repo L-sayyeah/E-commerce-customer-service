@@ -1,0 +1,6 @@
+{
+  "faithfulness": 0.9037,
+  "answer_relevancy": 0.5451,
+  "llm_context_precision_with_reference": 0.8517,
+  "context_recall": 1.0000
+}

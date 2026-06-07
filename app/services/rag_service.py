@@ -214,7 +214,13 @@ class RagService:
             top_k: int
     ) -> tuple[list[dict], dict]:
         if not settings.rag_rerank_enabled:
-            return sources[:top_k], self._build_rerank_meta("disabled")
+            sources = sources[:top_k]
+            for source in sources:
+                source["vector_score"] = 1
+                source["rerank_score"] = 0
+                source["bm25_score"] = 0
+                source["match_type"] = "vector"
+            return sources, self._build_rerank_meta("disabled")
 
         try:
             rerank_service = RerankService()

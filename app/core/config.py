@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     # ARK 配置
     llm_api_key: str | None = None
     llm_base_url: str = "https://ark.cn-beijing.volces.com/api/v3"
-    chat_model: str = "doubao-seed-2-0-lite-260428"
+    chat_model: str = "doubao-seed-2-0-mini-260428"
     llm_temperature: float = 0.7
 
     # embedding模型

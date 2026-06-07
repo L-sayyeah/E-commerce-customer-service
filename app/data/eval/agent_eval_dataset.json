@@ -1,0 +1,158 @@
+[
+    {
+        "messages":  [
+                         "帮我查一下 ORDER1001"
+                     ],
+        "expected_intent":  "order_query",
+        "expected_order_no":  "ORDER1001",
+        "expected_tool":  "query_order"
+    },
+    {
+        "expected_memory_used":  true,
+        "messages":  [
+                         "查一下 ORDER1007",
+                         "那它还能退款吗？"
+                     ],
+        "expected_intent":  "aftersales_check",
+        "expected_tool":  "check_aftersales"
+    },
+    {
+        "messages":  [
+                         "ORDER1011 的包裹超过10天没更新怎么办？"
+                     ],
+        "expected_intent":  "aftersales_check",
+        "expected_order_no":  "ORDER1011",
+        "expected_tool":  "check_aftersales"
+    },
+    {
+        "messages":  [
+                         "我想为 ORDER1020 创建一个人工处理工单"
+                     ],
+        "expected_intent":  "ticket_create",
+        "expected_order_no":  "ORDER1020",
+        "expected_tool":  "create_or_get_ticket"
+    },
+    {
+        "messages":  [
+                         "欧盟地区无理由退货期限是多久？"
+                     ],
+        "expected_intent":  "rag_qa",
+        "expected_tool":  "rag_answer"
+    },
+    {
+        "messages":  [
+                         "PayPal退款多久能到账？"
+                     ],
+        "expected_intent":  "rag_qa",
+        "expected_tool":  "rag_answer"
+    },
+    {
+        "expected_memory_used":  true,
+        "messages":  [
+                         "查一下 ORDER1033",
+                         "这个订单的物流是不是异常？"
+                     ],
+        "expected_intent":  "order_query",
+        "expected_tool":  "query_order"
+    },
+    {
+        "messages":  [
+                         "ORDER1042 商品配件缺失可以补发吗？"
+                     ],
+        "expected_intent":  "aftersales_check",
+        "expected_order_no":  "ORDER1042",
+        "expected_tool":  "check_aftersales"
+    },
+    {
+        "messages":  [
+                         "我收到的商品破损了，需要人工客服处理，订单 ORDER1055"
+                     ],
+        "expected_intent":  "ticket_create",
+        "expected_order_no":  "ORDER1055",
+        "expected_tool":  "create_or_get_ticket"
+    },
+    {
+        "messages":  [
+                         "信用卡拒付后还能重复退款吗？"
+                     ],
+        "expected_intent":  "rag_qa",
+        "expected_tool":  "rag_answer"
+    },
+    {
+        "messages":  [
+                         "ORDER1060 可以退货吗？"
+                     ],
+        "expected_intent":  "aftersales_check",
+        "expected_order_no":  "ORDER1060",
+        "expected_tool":  "check_aftersales"
+    },
+    {
+        "messages":  [
+                         "帮我看看 ORDER1072 的物流"
+                     ],
+        "expected_intent":  "order_query",
+        "expected_order_no":  "ORDER1072",
+        "expected_tool":  "query_order"
+    },
+    {
+        "expected_memory_used":  true,
+        "messages":  [
+                         "刚才这个订单需要人工审核吗？"
+                     ],
+        "expected_intent":  "aftersales_check",
+        "expected_tool":  "check_aftersales"
+    },
+    {
+        "messages":  [
+                         "日本外包装轻微压痕可以全额退款吗？"
+                     ],
+        "expected_intent":  "rag_qa",
+        "expected_tool":  "rag_answer"
+    },
+    {
+        "messages":  [
+                         "ORDER1088 用户已经发起PayPal争议，帮我建工单"
+                     ],
+        "expected_intent":  "ticket_create",
+        "expected_order_no":  "ORDER1088",
+        "expected_tool":  "create_or_get_ticket"
+    },
+    {
+        "expected_memory_used":  true,
+        "messages":  [
+                         "查一下 ORDER1093",
+                         "这个包裹丢失了能补发吗"
+                     ],
+        "expected_intent":  "aftersales_check",
+        "expected_tool":  "check_aftersales"
+    },
+    {
+        "messages":  [
+                         "美妆拆封后还能无理由退货吗？"
+                     ],
+        "expected_intent":  "rag_qa",
+        "expected_tool":  "rag_answer"
+    },
+    {
+        "messages":  [
+                         "ORDER1110 退款多久到账"
+                     ],
+        "expected_intent":  "rag_qa",
+        "expected_tool":  "rag_answer"
+    },
+    {
+        "messages":  [
+                         "帮 ORDER1121 创建物流异常工单"
+                     ],
+        "expected_intent":  "ticket_create",
+        "expected_order_no":  "ORDER1121",
+        "expected_tool":  "create_or_get_ticket"
+    },
+    {
+        "messages":  [
+                         "这个订单是VIP用户投诉，优先级应该是什么？"
+                     ],
+        "expected_intent":  "rag_qa",
+        "expected_tool":  "rag_answer"
+    }
+]

@@ -1,0 +1,1262 @@
+[
+    {
+        "ticket_no":  "TK202606050001",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0001"
+    },
+    {
+        "ticket_no":  "TK202606050001",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0001"
+    },
+    {
+        "ticket_no":  "TK202606050002",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0002"
+    },
+    {
+        "ticket_no":  "TK202606050002",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0002"
+    },
+    {
+        "ticket_no":  "TK202606050003",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：物流轨迹异常核查",
+        "trace_id":  "trace-seed-0003"
+    },
+    {
+        "ticket_no":  "TK202606050003",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0003"
+    },
+    {
+        "ticket_no":  "TK202606050004",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：商品质量问题处理",
+        "trace_id":  "trace-seed-0004"
+    },
+    {
+        "ticket_no":  "TK202606050005",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：售后问题人工处理",
+        "trace_id":  "trace-seed-0005"
+    },
+    {
+        "ticket_no":  "TK202606050005",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0005"
+    },
+    {
+        "ticket_no":  "TK202606050006",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请退款处理",
+        "trace_id":  "trace-seed-0006"
+    },
+    {
+        "ticket_no":  "TK202606050006",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0006"
+    },
+    {
+        "ticket_no":  "TK202606050007",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0007"
+    },
+    {
+        "ticket_no":  "TK202606050007",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0007"
+    },
+    {
+        "ticket_no":  "TK202606050008",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0008"
+    },
+    {
+        "ticket_no":  "TK202606050009",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：物流轨迹异常核查",
+        "trace_id":  "trace-seed-0009"
+    },
+    {
+        "ticket_no":  "TK202606050009",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0009"
+    },
+    {
+        "ticket_no":  "TK202606050010",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：商品质量问题处理",
+        "trace_id":  "trace-seed-0010"
+    },
+    {
+        "ticket_no":  "TK202606050010",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0010"
+    },
+    {
+        "ticket_no":  "TK202606050011",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：售后问题人工处理",
+        "trace_id":  "trace-seed-0011"
+    },
+    {
+        "ticket_no":  "TK202606050011",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0011"
+    },
+    {
+        "ticket_no":  "TK202606050012",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请退款处理",
+        "trace_id":  "trace-seed-0012"
+    },
+    {
+        "ticket_no":  "TK202606050013",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0013"
+    },
+    {
+        "ticket_no":  "TK202606050013",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0013"
+    },
+    {
+        "ticket_no":  "TK202606050014",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0014"
+    },
+    {
+        "ticket_no":  "TK202606050014",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0014"
+    },
+    {
+        "ticket_no":  "TK202606050015",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：物流轨迹异常核查",
+        "trace_id":  "trace-seed-0015"
+    },
+    {
+        "ticket_no":  "TK202606050015",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0015"
+    },
+    {
+        "ticket_no":  "TK202606050016",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：商品质量问题处理",
+        "trace_id":  "trace-seed-0016"
+    },
+    {
+        "ticket_no":  "TK202606050017",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：售后问题人工处理",
+        "trace_id":  "trace-seed-0017"
+    },
+    {
+        "ticket_no":  "TK202606050017",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0017"
+    },
+    {
+        "ticket_no":  "TK202606050018",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请退款处理",
+        "trace_id":  "trace-seed-0018"
+    },
+    {
+        "ticket_no":  "TK202606050018",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0018"
+    },
+    {
+        "ticket_no":  "TK202606050019",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0019"
+    },
+    {
+        "ticket_no":  "TK202606050019",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0019"
+    },
+    {
+        "ticket_no":  "TK202606050020",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0020"
+    },
+    {
+        "ticket_no":  "TK202606050021",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：物流轨迹异常核查",
+        "trace_id":  "trace-seed-0021"
+    },
+    {
+        "ticket_no":  "TK202606050021",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0021"
+    },
+    {
+        "ticket_no":  "TK202606050022",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：商品质量问题处理",
+        "trace_id":  "trace-seed-0022"
+    },
+    {
+        "ticket_no":  "TK202606050022",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0022"
+    },
+    {
+        "ticket_no":  "TK202606050023",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：售后问题人工处理",
+        "trace_id":  "trace-seed-0023"
+    },
+    {
+        "ticket_no":  "TK202606050023",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0023"
+    },
+    {
+        "ticket_no":  "TK202606050024",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请退款处理",
+        "trace_id":  "trace-seed-0024"
+    },
+    {
+        "ticket_no":  "TK202606050025",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0025"
+    },
+    {
+        "ticket_no":  "TK202606050025",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0025"
+    },
+    {
+        "ticket_no":  "TK202606050026",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0026"
+    },
+    {
+        "ticket_no":  "TK202606050026",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0026"
+    },
+    {
+        "ticket_no":  "TK202606050027",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：物流轨迹异常核查",
+        "trace_id":  "trace-seed-0027"
+    },
+    {
+        "ticket_no":  "TK202606050027",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0027"
+    },
+    {
+        "ticket_no":  "TK202606050028",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：商品质量问题处理",
+        "trace_id":  "trace-seed-0028"
+    },
+    {
+        "ticket_no":  "TK202606050029",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：售后问题人工处理",
+        "trace_id":  "trace-seed-0029"
+    },
+    {
+        "ticket_no":  "TK202606050029",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0029"
+    },
+    {
+        "ticket_no":  "TK202606050030",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请退款处理",
+        "trace_id":  "trace-seed-0030"
+    },
+    {
+        "ticket_no":  "TK202606050030",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0030"
+    },
+    {
+        "ticket_no":  "TK202606050031",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0031"
+    },
+    {
+        "ticket_no":  "TK202606050031",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0031"
+    },
+    {
+        "ticket_no":  "TK202606050032",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0032"
+    },
+    {
+        "ticket_no":  "TK202606050033",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：物流轨迹异常核查",
+        "trace_id":  "trace-seed-0033"
+    },
+    {
+        "ticket_no":  "TK202606050033",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0033"
+    },
+    {
+        "ticket_no":  "TK202606050034",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：商品质量问题处理",
+        "trace_id":  "trace-seed-0034"
+    },
+    {
+        "ticket_no":  "TK202606050034",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0034"
+    },
+    {
+        "ticket_no":  "TK202606050035",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：售后问题人工处理",
+        "trace_id":  "trace-seed-0035"
+    },
+    {
+        "ticket_no":  "TK202606050035",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0035"
+    },
+    {
+        "ticket_no":  "TK202606050036",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请退款处理",
+        "trace_id":  "trace-seed-0036"
+    },
+    {
+        "ticket_no":  "TK202606050037",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0037"
+    },
+    {
+        "ticket_no":  "TK202606050037",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0037"
+    },
+    {
+        "ticket_no":  "TK202606050038",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0038"
+    },
+    {
+        "ticket_no":  "TK202606050038",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0038"
+    },
+    {
+        "ticket_no":  "TK202606050039",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：物流轨迹异常核查",
+        "trace_id":  "trace-seed-0039"
+    },
+    {
+        "ticket_no":  "TK202606050039",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0039"
+    },
+    {
+        "ticket_no":  "TK202606050040",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：商品质量问题处理",
+        "trace_id":  "trace-seed-0040"
+    },
+    {
+        "ticket_no":  "TK202606050041",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：售后问题人工处理",
+        "trace_id":  "trace-seed-0041"
+    },
+    {
+        "ticket_no":  "TK202606050041",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0041"
+    },
+    {
+        "ticket_no":  "TK202606050042",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请退款处理",
+        "trace_id":  "trace-seed-0042"
+    },
+    {
+        "ticket_no":  "TK202606050042",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0042"
+    },
+    {
+        "ticket_no":  "TK202606050043",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0043"
+    },
+    {
+        "ticket_no":  "TK202606050043",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0043"
+    },
+    {
+        "ticket_no":  "TK202606050044",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0044"
+    },
+    {
+        "ticket_no":  "TK202606050045",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：物流轨迹异常核查",
+        "trace_id":  "trace-seed-0045"
+    },
+    {
+        "ticket_no":  "TK202606050045",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0045"
+    },
+    {
+        "ticket_no":  "TK202606050046",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：商品质量问题处理",
+        "trace_id":  "trace-seed-0046"
+    },
+    {
+        "ticket_no":  "TK202606050046",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0046"
+    },
+    {
+        "ticket_no":  "TK202606050047",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：售后问题人工处理",
+        "trace_id":  "trace-seed-0047"
+    },
+    {
+        "ticket_no":  "TK202606050047",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0047"
+    },
+    {
+        "ticket_no":  "TK202606050048",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请退款处理",
+        "trace_id":  "trace-seed-0048"
+    },
+    {
+        "ticket_no":  "TK202606050049",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0049"
+    },
+    {
+        "ticket_no":  "TK202606050049",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0049"
+    },
+    {
+        "ticket_no":  "TK202606050050",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0050"
+    },
+    {
+        "ticket_no":  "TK202606050050",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0050"
+    },
+    {
+        "ticket_no":  "TK202606050051",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：物流轨迹异常核查",
+        "trace_id":  "trace-seed-0051"
+    },
+    {
+        "ticket_no":  "TK202606050051",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0051"
+    },
+    {
+        "ticket_no":  "TK202606050052",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：商品质量问题处理",
+        "trace_id":  "trace-seed-0052"
+    },
+    {
+        "ticket_no":  "TK202606050053",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：售后问题人工处理",
+        "trace_id":  "trace-seed-0053"
+    },
+    {
+        "ticket_no":  "TK202606050053",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0053"
+    },
+    {
+        "ticket_no":  "TK202606050054",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请退款处理",
+        "trace_id":  "trace-seed-0054"
+    },
+    {
+        "ticket_no":  "TK202606050054",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0054"
+    },
+    {
+        "ticket_no":  "TK202606050055",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0055"
+    },
+    {
+        "ticket_no":  "TK202606050055",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0055"
+    },
+    {
+        "ticket_no":  "TK202606050056",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0056"
+    },
+    {
+        "ticket_no":  "TK202606050057",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：物流轨迹异常核查",
+        "trace_id":  "trace-seed-0057"
+    },
+    {
+        "ticket_no":  "TK202606050057",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0057"
+    },
+    {
+        "ticket_no":  "TK202606050058",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：商品质量问题处理",
+        "trace_id":  "trace-seed-0058"
+    },
+    {
+        "ticket_no":  "TK202606050058",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0058"
+    },
+    {
+        "ticket_no":  "TK202606050059",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：售后问题人工处理",
+        "trace_id":  "trace-seed-0059"
+    },
+    {
+        "ticket_no":  "TK202606050059",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0059"
+    },
+    {
+        "ticket_no":  "TK202606050060",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请退款处理",
+        "trace_id":  "trace-seed-0060"
+    },
+    {
+        "ticket_no":  "TK202606050061",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0061"
+    },
+    {
+        "ticket_no":  "TK202606050061",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0061"
+    },
+    {
+        "ticket_no":  "TK202606050062",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0062"
+    },
+    {
+        "ticket_no":  "TK202606050062",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0062"
+    },
+    {
+        "ticket_no":  "TK202606050063",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：物流轨迹异常核查",
+        "trace_id":  "trace-seed-0063"
+    },
+    {
+        "ticket_no":  "TK202606050063",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0063"
+    },
+    {
+        "ticket_no":  "TK202606050064",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：商品质量问题处理",
+        "trace_id":  "trace-seed-0064"
+    },
+    {
+        "ticket_no":  "TK202606050065",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：售后问题人工处理",
+        "trace_id":  "trace-seed-0065"
+    },
+    {
+        "ticket_no":  "TK202606050065",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0065"
+    },
+    {
+        "ticket_no":  "TK202606050066",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请退款处理",
+        "trace_id":  "trace-seed-0066"
+    },
+    {
+        "ticket_no":  "TK202606050066",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0066"
+    },
+    {
+        "ticket_no":  "TK202606050067",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0067"
+    },
+    {
+        "ticket_no":  "TK202606050067",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0067"
+    },
+    {
+        "ticket_no":  "TK202606050068",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0068"
+    },
+    {
+        "ticket_no":  "TK202606050069",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：物流轨迹异常核查",
+        "trace_id":  "trace-seed-0069"
+    },
+    {
+        "ticket_no":  "TK202606050069",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0069"
+    },
+    {
+        "ticket_no":  "TK202606050070",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：商品质量问题处理",
+        "trace_id":  "trace-seed-0070"
+    },
+    {
+        "ticket_no":  "TK202606050070",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0070"
+    },
+    {
+        "ticket_no":  "TK202606050071",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：售后问题人工处理",
+        "trace_id":  "trace-seed-0071"
+    },
+    {
+        "ticket_no":  "TK202606050071",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0071"
+    },
+    {
+        "ticket_no":  "TK202606050072",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请退款处理",
+        "trace_id":  "trace-seed-0072"
+    },
+    {
+        "ticket_no":  "TK202606050073",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0073"
+    },
+    {
+        "ticket_no":  "TK202606050073",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0073"
+    },
+    {
+        "ticket_no":  "TK202606050074",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0074"
+    },
+    {
+        "ticket_no":  "TK202606050074",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0074"
+    },
+    {
+        "ticket_no":  "TK202606050075",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：物流轨迹异常核查",
+        "trace_id":  "trace-seed-0075"
+    },
+    {
+        "ticket_no":  "TK202606050075",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0075"
+    },
+    {
+        "ticket_no":  "TK202606050076",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：商品质量问题处理",
+        "trace_id":  "trace-seed-0076"
+    },
+    {
+        "ticket_no":  "TK202606050077",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：售后问题人工处理",
+        "trace_id":  "trace-seed-0077"
+    },
+    {
+        "ticket_no":  "TK202606050077",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "in_progress",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 in_progress",
+        "trace_id":  "trace-seed-0077"
+    },
+    {
+        "ticket_no":  "TK202606050078",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请退款处理",
+        "trace_id":  "trace-seed-0078"
+    },
+    {
+        "ticket_no":  "TK202606050078",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "resolved",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 resolved",
+        "trace_id":  "trace-seed-0078"
+    },
+    {
+        "ticket_no":  "TK202606050079",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：用户申请换货处理",
+        "trace_id":  "trace-seed-0079"
+    },
+    {
+        "ticket_no":  "TK202606050079",
+        "action":  "status_change",
+        "from_status":  "open",
+        "to_status":  "closed",
+        "operator_id":  "agent_seed",
+        "remark":  "根据售后流程将工单状态更新为 closed",
+        "trace_id":  "trace-seed-0079"
+    },
+    {
+        "ticket_no":  "TK202606050080",
+        "action":  "create",
+        "from_status":  null,
+        "to_status":  "open",
+        "operator_id":  "system_seed",
+        "remark":  "创建工单：包裹异常申请补发",
+        "trace_id":  "trace-seed-0080"
+    }
+]

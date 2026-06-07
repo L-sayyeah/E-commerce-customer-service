@@ -91,7 +91,7 @@ async def init_vector_store():
     return success_response(result)
 
 
-# 搜索知识文档
+# 向量搜索知识文档
 @router.post("/search", response_model=ApiResponse[KnowledgeSearchResponse])
 async def search_knowledge(request: KnowledgeSearchRequest, db: AsyncSession = Depends(get_db)):
     service = KnowledgeService(db)
@@ -203,6 +203,7 @@ async def search_engine_health():
     return success_response(result)
 
 
+# BM25搜索知识文档
 @router.post("/bm25-search", response_model=ApiResponse[KnowledgeBm25SearchResponse])
 async def bm25_search_knowledge(request: KnowledgeBm25SearchRequest, db: AsyncSession = Depends(get_db)):
     service = KnowledgeService(db)
@@ -225,6 +226,7 @@ async def bm25_search_knowledge(request: KnowledgeBm25SearchRequest, db: AsyncSe
     return success_response(data)
 
 
+# 混合搜索知识文档
 @router.post("/hybrid-search", response_model=ApiResponse[KnowledgeHybridSearchResponse])
 async def hybrid_search_knowledge(request: KnowledgeHybridSearchRequest, db: AsyncSession = Depends(get_db)):
     service = KnowledgeService(db)
