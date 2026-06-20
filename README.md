@@ -365,32 +365,6 @@ app/data/seed/              # MySQL 订单和工单 seed 数据
 5. 确认文档同步写入 MySQL、Milvus 和 Elasticsearch。
 6. 运行 RAG 或 Ragas 评测脚本。
 
-## 面试亮点
-
-### 1. 为什么使用 LangGraph
-
-普通 Chain 适合线性问答，但客服售后场景包含意图识别、订单查询、售后判断、工单创建、安全检查和人工审核等多个业务节点。LangGraph 可以把流程拆成显式状态机，使每个节点可观测、可恢复、可单独优化。
-
-### 2. 为什么使用 Hybrid Search
-
-纯向量检索适合语义召回，但对订单、国家、天数、支付方式等精确关键词不够稳定。BM25 对关键词敏感，但语义泛化较弱。Hybrid Search 融合 Milvus 向量召回和 Elasticsearch BM25，兼顾语义和关键词。
-
-### 3. Rerank 的作用
-
-Hybrid Search 负责扩大召回，Rerank 负责对候选上下文重新排序，提高 TopK 上下文精确率，使最终进入 Prompt 的内容更相关。
-
-### 4. trace_id 的作用
-
-trace_id 用于串联一次请求中的 HTTP 请求、Agent run、Agent node、RAG 检索和工单操作。线上排查时可以通过 trace_id 还原完整调用链路。
-
-### 5. 上下文工程
-
-项目没有简单把历史消息全部塞进 Prompt，而是通过 ContextBuilder 提取最近订单号、最近工单、上一轮意图、当前是否追问等结构化上下文，提高多轮客服对话的稳定性。
-
-### 6. 评测闭环
-
-项目使用 Ragas 对不同检索策略进行离线评测，并根据 Faithfulness、Answer Relevancy、Context Precision、Context Recall 分析检索和生成效果，使 RAG 优化有数据依据。
-
 ## 后续优化方向
 
 - 接入 JWT 鉴权和 RBAC 权限控制
@@ -401,8 +375,3 @@ trace_id 用于串联一次请求中的 HTTP 请求、Agent run、Agent node、R
 - 增加 Docker Compose 一键部署
 - 增加 CI 测试和接口自动化测试
 
-## 简历描述参考
-
-```text
-基于 FastAPI + LangGraph 构建跨境电商售后客服 Agent 系统，支持客服对话、订单查询、售后规则判断、知识库 RAG 问答、工单管理和日志追踪。系统结合 Milvus 向量检索、Elasticsearch BM25、DashScope Rerank 和 Doubao 大模型，实现 Hybrid RAG 检索与流式回答，并通过 Ragas 对 Vector、Hybrid、Hybrid+Rerank 进行离线评测。实验结果显示，Hybrid+Rerank 将 Answer Relevancy 从 0.482 提升至 0.620，Context Precision 从 0.870 提升至 1.000，Context Recall 从 0.950 提升至 1.000。
-```
