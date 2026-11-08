@@ -14,11 +14,14 @@ class MilvusService:
         self.collection_name = settings.milvus_collection
 
     def connect(self) -> None:
-        connections.connect(
-            alias=self.alias,
-            host=settings.milvus_host,
-            port=settings.milvus_port
-        )
+        connection_options = {
+            "alias": self.alias,
+            "host": settings.milvus_host,
+            "port": settings.milvus_port,
+        }
+        if settings.milvus_token:
+            connection_options["token"] = settings.milvus_token
+        connections.connect(**connection_options)
 
     def health_check(self) -> dict:
         self.connect()

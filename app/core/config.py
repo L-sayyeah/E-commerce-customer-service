@@ -1,10 +1,21 @@
 from pathlib import Path
+from typing import Annotated, Literal
 
-from pydantic import Field
+from pydantic import BaseModel, ConfigDict, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 ENV_FILE = BASE_DIR / ".env"
+
+
+class Principal(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
+    user_id: str = Field(min_length=1, max_length=64)
+    role: Literal["customer", "admin"] = "customer"
+
+
+TokenDigest = Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
 
 
 class Settings(BaseSettings):
@@ -13,6 +24,7 @@ class Settings(BaseSettings):
     api_prefix: str = "/api/v1"
 
     database_url: str = Field(min_length=1)
+    auth_token_digests: dict[TokenDigest, Principal] = Field(default_factory=dict, repr=False)
 
     # 日志配置
     log_level: str = "INFO"
@@ -23,6 +35,7 @@ class Settings(BaseSettings):
     milvus_port: int = 19530
     milvus_collection: str = "knowledge_chunks"
     milvus_vector_dim: int = 1536
+    milvus_token: str | None = None
 
     # Elasticsearch 配置
     elasticsearch_url: str = "http://127.0.0.1:9200"
@@ -43,18 +56,29 @@ class Settings(BaseSettings):
     # embedding模型
     embedding_model: str = "tongyi-embedding-vision-plus-2026-03-06"
     embedding_dimensions: int = 1536
+    embedding_workspace_id: str | None = None
+    embedding_api_key: str | None = None
+    embedding_endpoint: str | None = None
+    embedding_batch_size: int = Field(default=20, ge=1, le=20)
 
     agent_intent_use_llm: bool = True
 
     # RAG 配置
     rag_retrieval_mode: str = "hybrid"
     hybrid_vector_weight: float = 0.7
+    rag_hybrid_fusion: Literal["weighted", "rrf"] = "weighted"
+    rag_rrf_rank_constant: int = Field(default=60, ge=1)
+    agentic_rag_enabled: bool = True
+    rag_adaptive_rerank_enabled: bool = True
+    rerank_min_score_gap: float = Field(default=0.12, gt=0)
 
     # Rerank 配置
     rag_rerank_enabled: bool = True
     rag_retrieval_top_n: int = 20
     rerank_model: str = "qwen3-vl-rerank"
     rerank_top_n: int = 5
+    rerank_endpoint: str | None = None
+    rerank_api_key: str | None = None
     dashscope_rerank_url: str = (
         "https://dashscope.aliyuncs.com/api/v1/services/rerank/text-rerank/text-rerank"
     )

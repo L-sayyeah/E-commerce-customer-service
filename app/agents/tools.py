@@ -3,7 +3,7 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.schemas.ticket import CreateTicketRequest
+from app.core.config import Principal
 from app.services.aftersales_rule_service import AftersalesRuleService
 from app.services.knoewledge_service import KnowledgeService
 from app.services.order_service import OrderService
@@ -52,15 +52,18 @@ def serialize_order(order) -> dict[str, Any]:
     }
 
 class AgentTools:
-    def __init__(self, db: AsyncSession):
+    def __init__(self, db: AsyncSession, principal: Principal):
         self.db = db
+        self.principal = principal
 
-    async def rag_answer(self, state: dict, query: str, top_k: int = 5) -> dict:
+    async def rag_answer(
+        self, state: dict, query: str, top_k: int = 5, *, retrieval_query: str | None = None,
+    ) -> dict:
         try:
             knowledge_service = KnowledgeService(self.db)
             rag_service = RagService(knowledge_service, self.db)
 
-            result = await rag_service.answer(query=query, top_k=top_k)
+            result = await rag_service.answer(query=query, top_k=top_k, retrieval_query=retrieval_query)
 
             add_action(
                 state,
@@ -70,6 +73,7 @@ class AgentTools:
                 metadata={
                     "source_count": len(result.get("sources", [])),
                     "retrieval_mode": result.get("retrieval_mode"),
+                    "retrieval_trace": result.get("retrieval_trace"),
                 },
             )
             return result
@@ -84,7 +88,7 @@ class AgentTools:
 
     async def query_order(self, state: dict, order_no: str,):
         try:
-            service = OrderService(self.db)
+            service = OrderService(self.db, self.principal)
             order = await service.get_by_order_no(order_no)
 
             if order is None:
@@ -160,55 +164,10 @@ class AgentTools:
             )
             raise
 
-    async def create_or_get_ticket(self, state: dict, request: CreateTicketRequest, dedupe_by_order_issue: bool = True):
-        try:
-            service = TicketService(self.db)
-
-            if dedupe_by_order_issue and request.order_no:
-                existing_ticket = await service.get_open_ticket_by_order_and_issue(
-                    order_no=request.order_no,
-                    issue_type=request.issue_type,
-                )
-
-                if existing_ticket is not None:
-                    add_action(
-                        state,
-                        tool="create_or_get_ticket",
-                        status="reused",
-                        summary=f"reused open ticket {existing_ticket.ticket_no}",
-                        metadata={
-                            "ticket_no": existing_ticket.ticket_no,
-                            "order_no": request.order_no,
-                            "issue_type": request.issue_type,
-                        },
-                    )
-                    return existing_ticket
-
-            ticket = await service.create_ticket(request)
-
-            add_action(
-                state,
-                tool="create_or_get_ticket",
-                status="created",
-                summary=f"created ticket {ticket.ticket_no}",
-                metadata={
-                    "ticket_no": ticket.ticket_no,
-                    "order_no": ticket.order_no,
-                    "issue_type": ticket.issue_type,
-                },
-            )
-
-            return ticket
-
-        except Exception as exc:
-            add_action(
-                state,
-                tool="create_or_get_ticket",
-                status="failed",
-                summary=str(exc),
-                metadata={
-                    "order_no": request.order_no,
-                    "issue_type": request.issue_type,
-                },
-            )
-            raise
+    async def query_ticket(self, state: dict, ticket_no: str) -> dict | None:
+        ticket = await TicketService(self.db, self.principal).get_by_ticket_no(ticket_no)
+        if ticket is None:
+            add_action(state, "query_ticket", "not_found", "Ticket not found")
+            return None
+        add_action(state, "query_ticket", "success", "Ticket status retrieved")
+        return {"ticket_no": ticket.ticket_no, "status": ticket.status}

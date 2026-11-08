@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sse_starlette import EventSourceResponse
 
-from app.agents.graph import build_agent_graph
+from app.core.auth import CurrentPrincipal
 from app.core.database import get_db
 from app.core.exceptions import AppException
 from app.core.request_context import get_trace_id
@@ -13,14 +13,15 @@ from app.models.agent_log import AgentRunLog
 from app.schemas.chat import ChatSessionResponse, CreateChatSessionRequest, ChatMessageResponse, SendMessageRequest, \
     ChatRagSource, AgentActionResponse
 from app.services.chat_service import ChatService
+from app.services.session_access import require_owned_session
 
 router = APIRouter(prefix="/chat", tags=["chat"])
 logger = logging.getLogger(__name__)
 
 
 @router.post("/sessions", response_model=ApiResponse[ChatSessionResponse])
-async def create_chat_session(request: CreateChatSessionRequest, db: AsyncSession = Depends(get_db)):
-    service = ChatService(db)
+async def create_chat_session(request: CreateChatSessionRequest, principal: CurrentPrincipal, db: AsyncSession = Depends(get_db)):
+    service = ChatService(db, principal)
     session = await service.create_session(request)
     data = ChatSessionResponse(
         id=session.id,
@@ -34,8 +35,8 @@ async def create_chat_session(request: CreateChatSessionRequest, db: AsyncSessio
 
 
 @router.post("/messages", response_model=ApiResponse[ChatMessageResponse])
-async def send_message(request: SendMessageRequest, db: AsyncSession = Depends(get_db)):
-    service = ChatService(db)
+async def send_message(request: SendMessageRequest, principal: CurrentPrincipal, db: AsyncSession = Depends(get_db)):
+    service = ChatService(db, principal)
     try:
         user_message, assistant_message, agent_result = await service.send_message(request)
         sources = agent_result.get("sources") or []
@@ -84,12 +85,13 @@ async def send_message(request: SendMessageRequest, db: AsyncSession = Depends(g
 
 
 @router.post("/messages/stream")
-async def send_message_stream(request: SendMessageRequest, db: AsyncSession = Depends(get_db)):
-    service = ChatService(db)
+async def send_message_stream(request: SendMessageRequest, principal: CurrentPrincipal, db: AsyncSession = Depends(get_db)):
+    session = await require_owned_session(db, principal, request.session_id)
+    service = ChatService(db, principal)
 
     async def event_generator():
         try:
-            async for event in service.stream_message(request):
+            async for event in service.stream_message(request, session):
                 event_type = event["type"]
 
                 if event_type == "sources":
@@ -139,24 +141,9 @@ async def send_message_stream(request: SendMessageRequest, db: AsyncSession = De
 
 
 @router.post("/agent/messages", response_model=ApiResponse[dict])
-async def send_agent_message(request: SendMessageRequest, db: AsyncSession = Depends(get_db)):
-    graph = build_agent_graph(db)
-
+async def send_agent_message(request: SendMessageRequest, principal: CurrentPrincipal, db: AsyncSession = Depends(get_db)):
     try:
-        config = {
-            "configurable": {
-                "thread_id": str(request.session_id),
-                "checkpoint_ns": ""
-            }
-        }
-        result = await graph.ainvoke(
-            {
-                "session_id": request.session_id,
-                "user_message": request.content,
-                "sources": []
-            },
-            config=config
-        )
+        _, _, result = await ChatService(db, principal).send_message(request)
         agent_log = AgentRunLog(
             trace_id=get_trace_id(),
             session_id=request.session_id,
@@ -172,7 +159,10 @@ async def send_agent_message(request: SendMessageRequest, db: AsyncSession = Dep
         db.add(agent_log)
         await db.commit()
         return success_response(result)
+    except AppException:
+        raise
     except Exception as exc:
+        await db.rollback()
         agent_log = AgentRunLog(
             trace_id=get_trace_id(),
             session_id=request.session_id,
@@ -191,12 +181,13 @@ async def send_agent_message(request: SendMessageRequest, db: AsyncSession = Dep
 
 
 @router.post("/agent/messages/stream")
-async def send_agent_message_stream(request: SendMessageRequest, db: AsyncSession = Depends(get_db)):
-    service = ChatService(db)
+async def send_agent_message_stream(request: SendMessageRequest, principal: CurrentPrincipal, db: AsyncSession = Depends(get_db)):
+    session = await require_owned_session(db, principal, request.session_id)
+    service = ChatService(db, principal)
 
     async def event_generator():
         try:
-            async for event in service.stream_agent_message(request=request):
+            async for event in service.stream_agent_message(request, session):
                 event_type = event["type"]
 
                 if event_type == "intent":

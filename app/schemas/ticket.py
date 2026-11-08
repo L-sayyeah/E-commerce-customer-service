@@ -1,13 +1,14 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel, Field
 
 
 class CreateTicketRequest(BaseModel):
     user_id: str | None = None
-    order_no: str | None = None
-    session_id: str | None = None
-    issue_type: str = Field(description="refund/exchange/resend/logistics/product/other")
+    order_no: str | None = Field(default=None, min_length=1, max_length=64)
+    session_id: str | None = Field(default=None, min_length=1, max_length=64)
+    issue_type: Literal["refund", "exchange", "resend", "logistics", "product", "other"]
     title: str = Field(min_length=1, max_length=255)
     description: str = Field(min_length=1)
     priority: str = "medium"

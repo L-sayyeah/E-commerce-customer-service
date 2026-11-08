@@ -1,71 +1,86 @@
+import math
+from urllib.parse import urlsplit
+
 import httpx
-from langchain_community.document_compressors import DashScopeRerank
 
 from app.core.config import settings
 
 
 class RerankService:
-    def __init__(self):
-        self.reranker = DashScopeRerank(
-            model=settings.rerank_model,
-            top_n=settings.rerank_top_n,
-            dashscope_api_key=settings.dashscope_api_key,
-        )
-
     async def rerank(self, query: str, documents: list[dict], top_n: int) -> list[dict]:
         if not documents:
             return []
 
         candidates = documents[:100]
         top_n = min(top_n, len(candidates))
+        if top_n < 1:
+            raise ValueError("Rerank top_n must be positive")
+
+        endpoint = settings.rerank_endpoint or settings.dashscope_rerank_url
+        api_key = settings.rerank_api_key
+        if not api_key and not settings.rerank_endpoint:
+            api_key = settings.dashscope_api_key
+        if not api_key and settings.rerank_endpoint and settings.embedding_endpoint:
+            rerank_url = urlsplit(endpoint)
+            embedding_url = urlsplit(settings.embedding_endpoint)
+            if (rerank_url.scheme, rerank_url.hostname, rerank_url.port) == (
+                embedding_url.scheme, embedding_url.hostname, embedding_url.port
+            ):
+                api_key = settings.embedding_api_key
+        if not api_key:
+            raise ValueError("Configure RERANK_API_KEY or a matching workspace EMBEDDING_API_KEY")
 
         payload = {
             "model": settings.rerank_model,
             "input": {
-                "query": {
-                    "text": query
-                },
+                "query": query,
                 "documents": [
-                    {
-                        "text": self._build_document_text(item)
-                    }
+                    self._build_document_text(item)
                     for item in candidates
                 ]
             },
             "parameters":{
                 "top_n": top_n,
-                "return_document": False,
                 "instruct": "Given a customer service query, retrieve relevant passages that answer the query."
             }
         }
 
         headers = {
-            "Authorization": f"Bearer {settings.dashscope_api_key}",
+            "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
         }
 
         async with httpx.AsyncClient(timeout=50) as client:
             response = await client.post(
-                settings.dashscope_rerank_url,
+                endpoint,
                 headers=headers,
                 json=payload
             )
 
-        data = response.json()
-
-        if response.status_code >= 400:
-            raise RuntimeError(
-                "DashScope rerank failed: "
-                f"status_code={response.status_code}, "
-                f"body={response.text}"
-            )
-
-        results = data.get("output", {}).get("results", [])
+        if response.is_error:
+            raise RuntimeError(f"Rerank API returned HTTP {response.status_code}")
+        try:
+            results = response.json()["output"]["results"]
+        except (ValueError, KeyError, TypeError) as exc:
+            raise RuntimeError("Rerank API returned an invalid response") from exc
+        if not isinstance(results, list) or not 0 < len(results) <= top_n:
+            raise RuntimeError("Rerank API returned an invalid result count")
 
         reranked = []
+        seen = set()
         for result in results:
-            index = result["index"]
-            score = float(result.get("relevance_score") or 0)
+            if not isinstance(result, dict):
+                raise RuntimeError("Rerank API returned an invalid result item")
+            index = result.get("index")
+            if type(index) is not int or not 0 <= index < len(candidates) or index in seen:
+                raise RuntimeError("Rerank API returned invalid or duplicate document indices")
+            seen.add(index)
+            try:
+                score = float(result["relevance_score"])
+            except (KeyError, TypeError, ValueError) as exc:
+                raise RuntimeError("Rerank API returned an invalid relevance score") from exc
+            if not math.isfinite(score):
+                raise RuntimeError("Rerank API returned a non-finite relevance score")
 
             item = dict(candidates[index])
             item["rerank_score"] = score

@@ -13,10 +13,11 @@ ALLOWED_INTENTS = {
     "order_query",
     "aftersales_check",
     "ticket_create",
+    "ticket_query",
     "clarify",
 }
 
-ORDER_NO_PATTERN = re.compile(r"\b[A-Z]{2,}[A-Z0-9_-]*\d+[A-Z0-9_-]*\b")
+ORDER_NO_PATTERN = re.compile(r"(?<![A-Z0-9])(?!(?:TK[A-Z0-9]{8,32})(?![A-Z0-9]))[A-Z]{2,}[A-Z0-9_-]*\d+[A-Z0-9_-]*(?![A-Z0-9])")
 
 
 def extract_order_no(text: str) -> str | None:
@@ -74,11 +75,11 @@ class IntentClassifier:
                     "你是跨境电商售后客服 Agent 的意图识别器。"
                     "你只能返回 JSON，不要返回 Markdown，不要解释。"
                     "intent 只能是以下之一："
-                    "rag_qa, order_query, aftersales_check, ticket_create, clarify。"
+                    "rag_qa, order_query, aftersales_check, ticket_create, ticket_query, clarify。"
                     "rag_qa 表示政策、规则、FAQ、售后知识问答。"
                     "order_query 表示查询订单、物流、发货、签收、支付状态。"
                     "aftersales_check 表示判断是否可退款、退货、换货、补发。"
-                    "ticket_create 表示用户要求转人工、投诉、创建工单。"
+                    "ticket_create 表示用户要求转人工、投诉、创建工单。ticket_query 表示查询已有工单。"
                     "clarify 表示信息不足，需要追问。"
                 ),
             },
@@ -115,7 +116,9 @@ class IntentClassifier:
         normalized = message.lower()
         order_no = extract_order_no(message)
 
-        if any(keyword in message for keyword in ["转人工", "人工客服", "投诉", "工单"]):
+        if "工单" in message and any(word in message for word in ("进度", "状态", "到哪", "查询", "查一下")):
+            intent = "ticket_query"
+        elif any(keyword in message for keyword in ["转人工", "人工客服", "投诉", "工单"]):
             intent = "ticket_create"
         elif order_no and any(
                 keyword in message
@@ -124,7 +127,7 @@ class IntentClassifier:
             intent = "aftersales_check"
         elif order_no and any(
                 keyword in message
-                for keyword in ["订单", "物流", "到哪", "状态", "发货", "签收"]
+                for keyword in ["订单", "物流", "到哪", "状态", "发货", "签收", "查一下"]
         ):
             intent = "order_query"
         elif any(
@@ -183,7 +186,7 @@ class IntentClassifier:
 
             if any(
                     keyword in content
-                    for keyword in ["订单", "物流", "到哪", "状态", "发货", "签收"]
+                    for keyword in ["订单", "物流", "到哪", "状态", "发货", "签收", "查一下"]
             ):
                 return {
                     "intent": "order_query",

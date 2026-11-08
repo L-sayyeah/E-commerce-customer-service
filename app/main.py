@@ -33,7 +33,7 @@ app = FastAPI(
 
 app.add_middleware(RequestLoggingMiddleware)
 app.add_exception_handler(AppException, app_exception_handler)
-app.add_exception_handler(AppException, generic_exception_handler)
+app.add_exception_handler(Exception, generic_exception_handler)
 app.include_router(api_router, prefix=settings.api_prefix)
 
 @app.get("/health")

@@ -343,7 +343,9 @@ class KnowledgeService:
 
         return results
 
-    async def hybrid_search(self, query: str, top_k: int = 5, vector_weight: float = 0.7) -> list[dict]:
+    async def hybrid_search(
+        self, query: str, top_k: int = 5, vector_weight: float = 0.7, *, fusion: str = "weighted",
+    ) -> list[dict]:
         bm25_weight = 1 - vector_weight
 
         vector_results = await self.search(query=query, top_k=top_k)
@@ -390,9 +392,18 @@ class KnowledgeService:
                     "match_type": "bm25",
                 }
 
+        vector_ranks = {item["chunk_id"]: rank for rank, item in enumerate(vector_results, start=1)}
+        bm25_ranks = {item["chunk_id"]: rank for rank, item in enumerate(bm25_results, start=1)}
         results = []
         for item in merged.values():
-            final_score = item["vector_score"] * vector_weight + item["bm25_score"] * bm25_weight
+            if fusion == "rrf":
+                chunk_id = item["chunk_id"]
+                final_score = sum(
+                    1 / (settings.rag_rrf_rank_constant + ranks[chunk_id])
+                    for ranks in (vector_ranks, bm25_ranks) if chunk_id in ranks
+                )
+            else:
+                final_score = item["vector_score"] * vector_weight + item["bm25_score"] * bm25_weight
             item["score"] = final_score
             results.append(item)
 

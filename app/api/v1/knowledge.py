@@ -5,6 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sse_starlette import EventSourceResponse
 
+from app.core.auth import require_admin
 from app.core.config import settings
 from app.core.database import get_db
 from app.core.exceptions import AppException
@@ -43,7 +44,7 @@ def build_parse_task_response(task: DocumentParseTask) -> DocumentParseTaskRespo
 
 
 # 创建知识文档
-@router.post("/documents", response_model=ApiResponse[KnowledgeDocumentResponse])
+@router.post("/documents", dependencies=[Depends(require_admin)], response_model=ApiResponse[KnowledgeDocumentResponse])
 async def create_knowledge_document(request: CreateKnowledgeDocumentRequest, db: AsyncSession = Depends(get_db)):
     service = KnowledgeService(db)
     document, chunks = await service.create_document(request)
@@ -76,7 +77,7 @@ async def create_knowledge_document(request: CreateKnowledgeDocumentRequest, db:
 
 
 # 检查向量库健康状态
-@router.get("/vector-store/health", response_model=ApiResponse[dict])
+@router.get("/vector-store/health", dependencies=[Depends(require_admin)], response_model=ApiResponse[dict])
 async def vector_store_health():
     service = MilvusService()
     result = service.health_check()
@@ -84,7 +85,7 @@ async def vector_store_health():
 
 
 # 初始化向量库
-@router.post("/vector-store/init", response_model=ApiResponse[dict])
+@router.post("/vector-store/init", dependencies=[Depends(require_admin)], response_model=ApiResponse[dict])
 async def init_vector_store():
     service = MilvusService()
     result = service.init_collection()
@@ -191,7 +192,7 @@ async def rag_answer_stream(request: RagQueryRequest, db: AsyncSession = Depends
     return EventSourceResponse(event_generator())
 
 
-@router.get("/search-engine/health", response_model=ApiResponse[dict])
+@router.get("/search-engine/health", dependencies=[Depends(require_admin)], response_model=ApiResponse[dict])
 async def search_engine_health():
     service = ElasticsearchService()
 
@@ -253,7 +254,7 @@ async def hybrid_search_knowledge(request: KnowledgeHybridSearchRequest, db: Asy
 
 
 # 创建文档解析任务
-@router.post("/parse-tasks", response_model=ApiResponse[DocumentParseTaskResponse])
+@router.post("/parse-tasks", dependencies=[Depends(require_admin)], response_model=ApiResponse[DocumentParseTaskResponse])
 async def create_document_parse_task(request: CreateDocumentParseTaskRequest, db: AsyncSession = Depends(get_db)):
     model_version = request.model_version or settings.mineru_model_version
     language = request.language or settings.mineru_language
@@ -296,7 +297,7 @@ async def create_document_parse_task(request: CreateDocumentParseTaskRequest, db
 
 
 # 文档查询任务
-@router.get("/parse-tasks/{task_id}", response_model=ApiResponse[DocumentParseTaskResponse])
+@router.get("/parse-tasks/{task_id}", dependencies=[Depends(require_admin)], response_model=ApiResponse[DocumentParseTaskResponse])
 async def get_document_parse_task(task_id: str, db: AsyncSession = Depends(get_db)):
     stmt = select(DocumentParseTask).where(DocumentParseTask.task_id == task_id)
     result = await db.execute(stmt)
@@ -332,7 +333,7 @@ async def get_document_parse_task(task_id: str, db: AsyncSession = Depends(get_d
     return success_response(build_parse_task_response(task))
 
 
-@router.post("/parse-tasks/{task_id}/index", response_model=ApiResponse[KnowledgeDocumentResponse])
+@router.post("/parse-tasks/{task_id}/index", dependencies=[Depends(require_admin)], response_model=ApiResponse[KnowledgeDocumentResponse])
 async def index_document_parse_task(task_id: str, db: AsyncSession = Depends(get_db)):
     stmt = select(DocumentParseTask).where(DocumentParseTask.task_id == task_id)
     result = await db.execute(stmt)
@@ -411,7 +412,7 @@ async def index_document_parse_task(task_id: str, db: AsyncSession = Depends(get
     return success_response(data)
 
 
-@router.get("/documents", response_model=ApiResponse[list[KnowledgeDocumentListItem]])
+@router.get("/documents", dependencies=[Depends(require_admin)], response_model=ApiResponse[list[KnowledgeDocumentListItem]])
 async def list_knowledge_documents(
         status: str | None = None,
         limit: int = Query(default=20, ge=1, le=100),
@@ -445,7 +446,7 @@ async def list_knowledge_documents(
     return success_response(data)
 
 
-@router.get("/documents/{document_id}", response_model=ApiResponse[KnowledgeDocumentDetailResponse])
+@router.get("/documents/{document_id}", dependencies=[Depends(require_admin)], response_model=ApiResponse[KnowledgeDocumentDetailResponse])
 async def get_knowledge_document_detail(document_id: str, db: AsyncSession = Depends(get_db)):
     service = KnowledgeService(db)
     result = await service.get_document_detail(document_id)
@@ -488,7 +489,7 @@ async def get_knowledge_document_detail(document_id: str, db: AsyncSession = Dep
     return success_response(data)
 
 
-@router.post("/documents/{document_id}/retry-index",response_model=ApiResponse[KnowledgeDocumentDetailResponse])
+@router.post("/documents/{document_id}/retry-index", dependencies=[Depends(require_admin)], response_model=ApiResponse[KnowledgeDocumentDetailResponse])
 async def retry_knowledge_document_index(
     document_id: str,
     db: AsyncSession = Depends(get_db),

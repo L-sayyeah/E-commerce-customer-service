@@ -1,4 +1,4 @@
-from sqlalchemy import String, Text, ForeignKey
+from sqlalchemy import String, Text, ForeignKey, false
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import TimestampMixin, Base
@@ -21,6 +21,7 @@ class ChatSession(Base, TimestampMixin):
         nullable=True,
         comment="用户ID"
     )
+    owner_verified: Mapped[bool] = mapped_column(default=False, server_default=false(), nullable=False)
     channel: Mapped[str] = mapped_column(
         String(32),
         default="web",

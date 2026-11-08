@@ -1,4 +1,4 @@
-from sqlalchemy import String, Text
+from sqlalchemy import String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import TimestampMixin, Base
@@ -7,6 +7,10 @@ from app.models.base import TimestampMixin, Base
 # 工单模型
 class Ticket(Base, TimestampMixin):
     __tablename__ = "tickets"
+    __table_args__ = (UniqueConstraint("request_key", name="uq_tickets_request_key"),)
+
+    request_key: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    request_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
 
     ticket_no: Mapped[str] = mapped_column(

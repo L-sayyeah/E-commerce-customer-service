@@ -5,8 +5,11 @@ from app.models.order import Order
 
 
 class AftersalesRuleService:
-    refund_window_days = 30
-    exchange_window_days = 45
+    # Ordinary return windows from the regional policy documents. A quality
+    # exception or an exchange requires facts absent from the Order model.
+    refund_windows = {
+        "US": 30, "EU": 14, "UK": 30, "GB": 30, "AU": 30, "CA": 30, "JP": 14, "KR": 7,
+    }
 
     def evaluate(self, order: Order) -> dict:
         reasons: list[str] = []
@@ -48,17 +51,20 @@ class AftersalesRuleService:
 
                 days_since_delivered = (now - delivered_at).days
 
-                if days_since_delivered <= self.refund_window_days:
-                    refundable = True
-                    reasons.append(f"订单在签收后{self.refund_window_days}天内，支持退款申请")
-                else:
-                    reasons.append(f"订单已超过签收后{self.refund_window_days}天退款期")
+                window = self.refund_windows.get(order.country.strip().upper())
+                requires_human_review = True
 
-                if days_since_delivered <= self.exchange_window_days:
-                    exchangeable = True
-                    reasons.append(f"订单在签收后{self.exchange_window_days}天内，支持换货申请")
+                if days_since_delivered < 0:
+                    reasons.append("签收时间异常，需要人工确认")
+                elif window is None:
+                    reasons.append("尚无法确认该订单地区适用的普通退货窗口，需要人工审核")
+                elif days_since_delivered <= window:
+                    refundable = True
+                    reasons.append(f"订单在该地区签收后{window}天的普通退货窗口内，商品适用条件仍需核实")
                 else:
-                    reasons.append(f"订单已超过签收后{self.exchange_window_days}天换货期")
+                    reasons.append(f"订单已超过该地区签收后{window}天的普通退货窗口，质量等例外需人工审核")
+
+                reasons.append("换货需结合商品类别、问题和证据确认")
 
         if order.fulfillment_status == "cancelled":
             refundable = order.payment_status == "paid"

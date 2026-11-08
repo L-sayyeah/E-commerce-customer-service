@@ -6,32 +6,63 @@ from langgraph.types import interrupt
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents.context_builder import ContextBuilder
+from app.agents.dialogue_state import policy_query
 from app.agents.guardrails import ResponseGuard
-from app.agents.intent_classifier import IntentClassifier, extract_order_no, ORDER_NO_PATTERN
+from app.agents.intent_classifier import IntentClassifier
 from app.agents.state import AgentState
+from app.core.config import Principal
 from app.core.request_context import get_trace_id
 from app.models.agent_log import AgentNodeLog
-from app.schemas.ticket import CreateTicketRequest
+from app.services.adaptive_retrieval import chat_evidence_budget, ticket_policy_queries
 from app.agents.tools import AgentTools
 
 
 class AgentNodes:
-    def __init__(self, db: AsyncSession):
+    def __init__(self, db: AsyncSession, principal: Principal):
         self.db = db
-        self.tools = AgentTools(db)
+        self.tools = AgentTools(db, principal)
 
     async def _classify_intent(self, state: AgentState) -> AgentState:
-        if state.get("intent"):
+        dialogue = state.get("dialogue") or {}
+        question = state["user_message"]
+        policy_question = any(word in question for word in ("政策", "规则", "到账", "多久"))
+        if dialogue.get("clarification_prompt"):
+            state.update(intent="clarify", intent_reason="ambiguous policy scope", intent_classifier="dst")
             return state
+        if dialogue.get("ambiguous_order"):
+            state.update(intent="clarify", intent_reason="ambiguous order reference", intent_classifier="dst")
+            return state
+        if dialogue.get("policy_intent"):
+            state.update(intent="rag_qa", intent_reason="policy scope resolved", intent_classifier="dst")
+            return state
+        if not state.get("ticket_ref") and len(ticket_policy_queries(question)) >= 2 and not any(
+            phrase in question for phrase in ("帮我建单", "帮我创建", "帮我提交", "给我建单", "转人工")
+        ):
+            state.update(
+                intent="rag_qa", intent_reason="multiple ticket policy questions", intent_classifier="rule",
+            )
+            return state
+        if state.get("order_no") and any(word in question for word in ("退款", "退货", "换货", "补发", "售后")) and (
+            any(word in question for word in ("政策", "规则", "条款"))
+            and any(word in question for word in ("同时", "以及", "顺便", "分别", "也想", "并说明"))
+        ):
+            state.update(
+                intent="aftersales_check",
+                intent_reason="order eligibility and policy explanation requested",
+                intent_classifier="dst",
+                policy_context_requested=True,
+            )
+            return state
+        if dialogue.get("follow_up") and state.get("order_no") and not policy_question:
+            if any(word in question for word in ("退款", "退货", "补发", "换货", "售后", "还能退")):
+                state.update(intent="aftersales_check", intent_reason="order reference resolved", intent_classifier="dst")
+                return state
+            if any(word in question for word in ("物流", "发货", "签收", "到哪", "状态")):
+                state.update(intent="order_query", intent_reason="order reference resolved", intent_classifier="dst")
+                return state
 
-        classifier = IntentClassifier()
-        result = await classifier.classify(state["user_message"], state.get("recent_messages", []))
-
+        result = await IntentClassifier().classify(question, state.get("recent_messages", []))
         state["intent"] = result["intent"]
-
-        if result.get("order_no"):
-            state["order_no"] = result["order_no"]
-
         state["intent_reason"] = result.get("reason")
         state["intent_classifier"] = result["classifier"]
 
@@ -45,10 +76,13 @@ class AgentNodes:
         )
 
     async def _rag_node(self, state: AgentState) -> AgentState:
+        question = state["user_message"]
+        retrieval_query = state.get("retrieval_query")
         result = await self.tools.rag_answer(
             state=state,
-            query=state["user_message"],
-            top_k=5
+            query=question,
+            top_k=chat_evidence_budget(retrieval_query or question),
+            retrieval_query=retrieval_query,
         )
 
         state["answer"] = result["answer"]
@@ -122,36 +156,15 @@ class AgentNodes:
         state["order"] = serialized_order
         state["aftersales_result"] = aftersales_result
 
-        ticket_no = None
-        if aftersales_result["requires_human_review"]:
-            issue_type = "resend" if aftersales_result["resendable"] else "other"
-
-            ticket = await self.tools.create_or_get_ticket(
-                state=state,
-                request=CreateTicketRequest(
-                    user_id=order.user_id,
-                    order_no=order.order_no,
-                    session_id=state.get("session_id"),
-                    issue_type=issue_type,
-                    title=f"订单 {order.order_no} 需要人工审核",
-                    description="Agent 售后判断结果需要人工审核。原因：" + "；".join(aftersales_result["reasons"]),
-                    priority="medium",
-                    source="agent",
-                ),
-                dedupe_by_order_issue=True,
-            )
-            ticket_no = ticket.ticket_no
-            state["ticket_no"] = ticket_no
-
         reason_text = "；".join(aftersales_result["reasons"])
 
         state["answer"] = (
-            f"订单 {order.order_no} 的售后判断结果："
+            f"订单 {order.order_no} 按当前系统通用规则的初步判断："
             f"{reason_text}。"
         )
 
-        if ticket_no:
-            state["answer"] += f" 已为您创建或关联工单 {ticket_no}，后续会由人工继续处理。"
+        if aftersales_result["requires_human_review"]:
+            state["answer"] += " 如需人工跟进，请确认后提交工单。"
 
         return state
 
@@ -163,23 +176,21 @@ class AgentNodes:
         )
 
     async def _ticket_node(self, state: AgentState) -> AgentState:
-        ticket = await self.tools.create_or_get_ticket(
-            state=state,
-            request=CreateTicketRequest(
-                user_id=state.get("user_id"),
-                order_no=state.get("order_no"),
-                session_id=state.get("session_id"),
-                issue_type="other",
-                title="用户请求人工客服介入",
-                description=state["user_message"],
-                priority="medium",
-                source="agent",
-            ),
-            dedupe_by_order_issue=False,
-        )
+        if state.get("intent") != "ticket_query":
+            state["answer"] = "可以通过提交工单申请人工跟进。请确认订单及问题后提交。"
+            return state
 
-        state["ticket_no"] = ticket.ticket_no
-        state["answer"] = f"已为您创建工单 {ticket.ticket_no}，人工客服会继续跟进处理。"
+        ticket_no = state.get("ticket_ref")
+        if not ticket_no:
+            state["answer"] = "请提供要查询的工单号。"
+            return state
+
+        ticket = await self.tools.query_ticket(state, ticket_no)
+        if ticket is None:
+            state["answer"] = "没有查询到该工单，请确认工单号。"
+        else:
+            state["ticket_no"] = ticket["ticket_no"]
+            state["answer"] = f'工单 {ticket["ticket_no"]} 当前状态为 {ticket["status"]}。'
         return state
 
     async def ticket_node(self, state: AgentState) -> AgentState:
@@ -190,7 +201,13 @@ class AgentNodes:
         )
 
     async def _clarify_node(self, state: AgentState) -> AgentState:
-        state["answer"] = "请提供更多信息，例如订单号或您想咨询的问题，我会继续帮您处理"
+        dialogue = state.get("dialogue") or {}
+        if dialogue.get("clarification_prompt"):
+            state["answer"] = dialogue["clarification_prompt"]
+        elif dialogue.get("ambiguous_order"):
+            state["answer"] = "请确认您指的是哪一笔订单，或直接提供订单号。"
+        else:
+            state["answer"] = "请提供更多信息，例如订单号或您想咨询的问题，我会继续帮您处理。"
         return state
 
     async def clarify_node(self, state: AgentState) -> AgentState:
@@ -272,6 +289,8 @@ class AgentNodes:
     async def _response_guard_node(self, state: AgentState) -> AgentState:
         answer = state.get("answer")
 
+        if state.get("intent") in {"order_query", "aftersales_check", "ticket_query", "ticket_create", "clarify"}:
+            return state
         if not answer:
             state["guard_checked"] = False
             state["guard_safe"] = None
@@ -280,7 +299,7 @@ class AgentNodes:
 
         guard = ResponseGuard()
         result = await guard.check(
-            user_message=state["user_message"],
+            user_message=(state.get("dialogue") or {}).get("clarified_question") or state["user_message"],
             answer=answer,
             intent=state.get("intent"),
         )
@@ -298,27 +317,37 @@ class AgentNodes:
     async def build_context_node(self, state: AgentState) -> dict:
         builder = ContextBuilder()
 
+        question = state.get("user_message", "")
+        dialogue = state.get("dialogue") or {}
         context = builder.build(
-            user_message=state.get("user_message", ""),
-            recent_messages=state.get("recent_messages", [])
+            user_message=question,
+            recent_messages=[item for item in state.get("recent_messages", []) if item.get("role") == "user"],
         )
-
+        inherited = bool(dialogue.get("order_inherited"))
+        region = dialogue.get("region")
         updates = {
-            **context
+            **context,
+            "order_no": dialogue.get("order_no"),
+            "recent_order_no": dialogue.get("order_no"),
+            "ticket_ref": dialogue.get("ticket_no"),
+            "is_follow_up": bool(dialogue.get("follow_up")),
+            "memory_used": inherited or bool(region),
+            "memory_reason": "引用已解析的历史槽位" if inherited or region else None,
+            "context_summary": "订单指代有歧义" if dialogue.get("ambiguous_order") else (
+                "使用本轮和历史中的用户槽位" if inherited or region else "使用本轮信息"
+            ),
+            "retrieval_query": policy_query(question, dialogue)[1],
         }
-
-        if context["memory_used"] and context["recent_order_no"] and not state.get("order_no"):
-            updates["order_no"] = context["recent_order_no"]
 
         actions = list(state.get("actions") or [])
         actions.append(
             {
                 "tool": "context_builder",
                 "status": "success",
-                "summary": context["context_summary"],
+                "summary": updates["context_summary"],
                 "metadata": {
-                    "memory_used": context["memory_used"],
-                    "recent_order_no": context["recent_order_no"],
+                    "memory_used": updates["memory_used"],
+                    "recent_order_no": updates["recent_order_no"],
                     "last_intent": context["last_intent"],
                 },
             }
