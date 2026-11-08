@@ -1,0 +1,2736 @@
+{
+  "conversations": 30,
+  "turns": 81,
+  "intent_mode": "rules",
+  "jga_correct": 78,
+  "intent_correct": 79,
+  "decision_correct": 76,
+  "decision_confusion": {
+    "skip": {
+      "skip": 38
+    },
+    "raw": {
+      "raw": 24
+    },
+    "rewrite": {
+      "rewrite": 6,
+      "skip": 1,
+      "raw": 3
+    },
+    "clarify": {
+      "clarify": 8,
+      "raw": 1
+    }
+  },
+  "slot_scores": {
+    "active_order": {
+      "correct": 80,
+      "n": 81
+    },
+    "order_no": {
+      "correct": 78,
+      "n": 81
+    },
+    "ambiguous_order": {
+      "correct": 81,
+      "n": 81
+    },
+    "ticket_no": {
+      "correct": 6,
+      "n": 6
+    }
+  },
+  "rewrite": {
+    "n": 10,
+    "predicted_correct": 3,
+    "gold_dst_correct": 8
+  },
+  "retrieval": {
+    "gold_dst": {
+      "n": 10,
+      "recall_at_5": 1.0,
+      "ndcg_at_5": 0.9630929753571458,
+      "complete_evidence": 1
+    },
+    "human_rewrite": {
+      "n": 10,
+      "recall_at_5": 1.0,
+      "ndcg_at_5": 1.0,
+      "complete_evidence": 1
+    },
+    "predicted_dst": {
+      "n": 10,
+      "recall_at_5": 0.8,
+      "ndcg_at_5": 0.6892789260714373,
+      "complete_evidence": 0.8
+    },
+    "raw": {
+      "n": 10,
+      "recall_at_5": 0.7,
+      "ndcg_at_5": 0.552371901428583,
+      "complete_evidence": 0.7
+    }
+  },
+  "cases": [
+    {
+      "case_id": "multiturn-policy-detour-return",
+      "family": "multiturn:topic-detour",
+      "turn": 0,
+      "message": "查一下日本订单 ORDER92101 的物流状态。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-policy-detour-return",
+      "family": "multiturn:topic-detour",
+      "turn": 2,
+      "message": "欧盟普通商品签收后多久可以无理由退？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "欧盟普通商品签收后多久可以无理由退？"
+    },
+    {
+      "case_id": "multiturn-policy-detour-return",
+      "family": "multiturn:topic-detour",
+      "turn": 3,
+      "message": "回到刚才那单，它适用哪条普通退货规则？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "rewrite",
+      "decision": "rewrite",
+      "decision_correct": true,
+      "query_correct": false,
+      "query": "欧盟售后政策：回到刚才那单，它适用哪条普通退货规则？",
+      "oracle_query": "日本售后政策：回到刚才那单，它适用哪条普通退货规则？",
+      "oracle_query_correct": true,
+      "retrieval_queries": {
+        "raw": "回到刚才那单，它适用哪条普通退货规则？",
+        "predicted_dst": "欧盟售后政策：回到刚才那单，它适用哪条普通退货规则？",
+        "gold_dst": "日本售后政策：回到刚才那单，它适用哪条普通退货规则？",
+        "human_rewrite": "日本普通商品的退货窗口是多久？"
+      },
+      "retrieval": {
+        "raw": {
+          "recall_at_5": 0.0,
+          "ndcg_at_5": 0.0,
+          "complete_evidence": 0,
+          "rerank_status": "success"
+        },
+        "predicted_dst": {
+          "recall_at_5": 0.0,
+          "ndcg_at_5": 0.0,
+          "complete_evidence": 0,
+          "rerank_status": "success"
+        },
+        "gold_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "human_rewrite": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        }
+      }
+    },
+    {
+      "case_id": "multiturn-detour-keeps-order",
+      "family": "multiturn:topic-detour",
+      "turn": 0,
+      "message": "查一下韩国订单 ORDER92101 的物流状态。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-detour-keeps-order",
+      "family": "multiturn:topic-detour",
+      "turn": 1,
+      "message": "美国主观原因退货的运费谁承担？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "美国主观原因退货的运费谁承担？"
+    },
+    {
+      "case_id": "multiturn-detour-keeps-order",
+      "family": "multiturn:topic-detour",
+      "turn": 2,
+      "message": "回到刚才那笔，它签收了吗？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-detour-followup-policy",
+      "family": "multiturn:topic-detour",
+      "turn": 0,
+      "message": "查一下日本订单 ORDER92101 的物流。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-detour-followup-policy",
+      "family": "multiturn:topic-detour",
+      "turn": 1,
+      "message": "欧盟定制商品支持无理由退货吗？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "欧盟定制商品支持无理由退货吗？"
+    },
+    {
+      "case_id": "multiturn-detour-followup-policy",
+      "family": "multiturn:topic-detour",
+      "turn": 2,
+      "message": "那退款时效呢？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": false,
+        "ambiguous_order": true
+      },
+      "jga": false,
+      "expected_intent": "rag_qa",
+      "intent": "aftersales_check",
+      "expected_decision": "rewrite",
+      "decision": "skip",
+      "decision_correct": false,
+      "query_correct": false,
+      "query": "欧盟售后政策：那退款时效呢？",
+      "oracle_query": "欧盟售后政策：那退款时效呢？",
+      "oracle_query_correct": true,
+      "retrieval_queries": {
+        "raw": "那退款时效呢？",
+        "predicted_dst": "欧盟售后政策：那退款时效呢？",
+        "gold_dst": "欧盟售后政策：那退款时效呢？",
+        "human_rewrite": "欧盟退货质检通过后，平台通常多久发起退款？"
+      },
+      "retrieval": {
+        "raw": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "predicted_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "gold_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "human_rewrite": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        }
+      }
+    },
+    {
+      "case_id": "multiturn-detour-explicit-policy",
+      "family": "multiturn:topic-detour",
+      "turn": 0,
+      "message": "查一下欧盟订单 ORDER92101 的物流。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-detour-explicit-policy",
+      "family": "multiturn:topic-detour",
+      "turn": 1,
+      "message": "日本普通退货政策是什么？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "日本普通退货政策是什么？"
+    },
+    {
+      "case_id": "multiturn-detour-explicit-policy",
+      "family": "multiturn:topic-detour",
+      "turn": 2,
+      "message": "那韩国普通商品的无理由退货政策呢？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": false,
+        "ambiguous_order": true
+      },
+      "jga": false,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "那韩国普通商品的无理由退货政策呢？"
+    },
+    {
+      "case_id": "multiturn-detour-explicit-policy",
+      "family": "multiturn:topic-detour",
+      "turn": 3,
+      "message": "回到这单，查下物流状态。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-detour-verified-tool-region",
+      "family": "multiturn:topic-detour",
+      "turn": 0,
+      "message": "查一下 ORDER92101 的物流。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-detour-verified-tool-region",
+      "family": "multiturn:topic-detour",
+      "turn": 2,
+      "message": "另外，美国退货运费怎么规定？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "另外，美国退货运费怎么规定？"
+    },
+    {
+      "case_id": "multiturn-detour-verified-tool-region",
+      "family": "multiturn:topic-detour",
+      "turn": 3,
+      "message": "回到刚才这单，它的普通退货期限按什么政策？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "rewrite",
+      "decision": "rewrite",
+      "decision_correct": true,
+      "query_correct": false,
+      "query": "美国售后政策：回到刚才这单，它的普通退货期限按什么政策？",
+      "oracle_query": "韩国售后政策：回到刚才这单，它的普通退货期限按什么政策？",
+      "oracle_query_correct": true,
+      "retrieval_queries": {
+        "raw": "回到刚才这单，它的普通退货期限按什么政策？",
+        "predicted_dst": "美国售后政策：回到刚才这单，它的普通退货期限按什么政策？",
+        "gold_dst": "韩国售后政策：回到刚才这单，它的普通退货期限按什么政策？",
+        "human_rewrite": "韩国普通商品签收后无理由退货期限是多久？"
+      },
+      "retrieval": {
+        "raw": {
+          "recall_at_5": 0.0,
+          "ndcg_at_5": 0.0,
+          "complete_evidence": 0,
+          "rerank_status": "success"
+        },
+        "predicted_dst": {
+          "recall_at_5": 0.0,
+          "ndcg_at_5": 0.0,
+          "complete_evidence": 0,
+          "rerank_status": "success"
+        },
+        "gold_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "human_rewrite": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        }
+      }
+    },
+    {
+      "case_id": "multiturn-switch-explicit",
+      "family": "multiturn:order-switch",
+      "turn": 0,
+      "message": "查一下 ORDER92101 的物流。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-explicit",
+      "family": "multiturn:order-switch",
+      "turn": 1,
+      "message": "说错了，改成 ORDER92102，查一下物流。",
+      "expected_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-explicit",
+      "family": "multiturn:order-switch",
+      "turn": 2,
+      "message": "那这单还能补发吗？",
+      "expected_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "aftersales_check",
+      "intent": "aftersales_check",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-negation",
+      "family": "multiturn:order-switch",
+      "turn": 0,
+      "message": "查一下 ORDER92101 的状态。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-negation",
+      "family": "multiturn:order-switch",
+      "turn": 1,
+      "message": "不是 ORDER92101，应该是 ORDER92102 的物流。",
+      "expected_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-negation",
+      "family": "multiturn:order-switch",
+      "turn": 2,
+      "message": "它签收了吗？",
+      "expected_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-clear",
+      "family": "multiturn:order-switch",
+      "turn": 0,
+      "message": "查一下 ORDER92101 的物流。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-clear",
+      "family": "multiturn:order-switch",
+      "turn": 1,
+      "message": "不查这单了，换另一笔订单。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "clarify",
+      "intent": "clarify",
+      "expected_decision": "clarify",
+      "decision": "clarify",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-clear",
+      "family": "multiturn:order-switch",
+      "turn": 2,
+      "message": "它还能退款吗？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "clarify",
+      "intent": "clarify",
+      "expected_decision": "clarify",
+      "decision": "clarify",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-ordinal",
+      "family": "multiturn:order-switch",
+      "turn": 0,
+      "message": "先查一下 ORDER92101 的物流。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-ordinal",
+      "family": "multiturn:order-switch",
+      "turn": 1,
+      "message": "然后查 ORDER92102 的状态。",
+      "expected_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-ordinal",
+      "family": "multiturn:order-switch",
+      "turn": 2,
+      "message": "第一笔签收了吗？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-last",
+      "family": "multiturn:order-switch",
+      "turn": 0,
+      "message": "查一下 ORDER92101 的状态。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-last",
+      "family": "multiturn:order-switch",
+      "turn": 1,
+      "message": "再查 ORDER92102 的状态。",
+      "expected_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-last",
+      "family": "multiturn:order-switch",
+      "turn": 2,
+      "message": "第一笔到哪了？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-last",
+      "family": "multiturn:order-switch",
+      "turn": 3,
+      "message": "最后一笔签收了吗？",
+      "expected_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-previous",
+      "family": "multiturn:order-switch",
+      "turn": 0,
+      "message": "查一下 ORDER92101 的物流。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-previous",
+      "family": "multiturn:order-switch",
+      "turn": 1,
+      "message": "再查 ORDER92102 的物流。",
+      "expected_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-previous",
+      "family": "multiturn:order-switch",
+      "turn": 2,
+      "message": "上一笔发货了吗？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": false,
+        "order_no": false,
+        "ambiguous_order": true
+      },
+      "jga": false,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-nonexistent-ordinal",
+      "family": "multiturn:order-switch",
+      "turn": 0,
+      "message": "查一下 ORDER92101 的物流。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-switch-nonexistent-ordinal",
+      "family": "multiturn:order-switch",
+      "turn": 1,
+      "message": "第三笔的物流呢？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "clarify",
+      "intent": "clarify",
+      "expected_decision": "clarify",
+      "decision": "clarify",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-ambiguous-both",
+      "family": "multiturn:ambiguity",
+      "turn": 0,
+      "message": "ORDER92101 和 ORDER92102 的包裹都没收到。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "clarify",
+      "intent": "clarify",
+      "expected_decision": "clarify",
+      "decision": "clarify",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-ambiguous-both",
+      "family": "multiturn:ambiguity",
+      "turn": 1,
+      "message": "它还能补发吗？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "clarify",
+      "intent": "clarify",
+      "expected_decision": "clarify",
+      "decision": "clarify",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-ambiguous-resolved",
+      "family": "multiturn:ambiguity",
+      "turn": 0,
+      "message": "ORDER92101 和 ORDER92102 的包裹都没收到。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "clarify",
+      "intent": "clarify",
+      "expected_decision": "clarify",
+      "decision": "clarify",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-ambiguous-resolved",
+      "family": "multiturn:ambiguity",
+      "turn": 2,
+      "message": "我问的是 ORDER92102，能补发吗？",
+      "expected_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92102",
+        "order_no": "ORDER92102",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "aftersales_check",
+      "intent": "aftersales_check",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-ambiguous-policy-is-separate",
+      "family": "multiturn:ambiguity",
+      "turn": 0,
+      "message": "ORDER92101 和 ORDER92102 的包裹都没收到。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "clarify",
+      "intent": "clarify",
+      "expected_decision": "clarify",
+      "decision": "clarify",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-ambiguous-policy-is-separate",
+      "family": "multiturn:ambiguity",
+      "turn": 1,
+      "message": "另外，美国普通商品的退货窗口是多少？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "另外，美国普通商品的退货窗口是多少？"
+    },
+    {
+      "case_id": "multiturn-ambiguous-policy-is-separate",
+      "family": "multiturn:ambiguity",
+      "turn": 2,
+      "message": "那它还能退吗？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": true
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "clarify",
+      "intent": "clarify",
+      "expected_decision": "clarify",
+      "decision": "clarify",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-assistant-id-is-not-user-reference",
+      "family": "multiturn:provenance",
+      "turn": 0,
+      "message": "查一下 ORDER92101 的物流。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-assistant-id-is-not-user-reference",
+      "family": "multiturn:provenance",
+      "turn": 2,
+      "message": "它发货了吗？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-assistant-region-is-not-user-scope",
+      "family": "multiturn:provenance",
+      "turn": 0,
+      "message": "我想问欧盟无理由退货的条件。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "我想问欧盟无理由退货的条件。"
+    },
+    {
+      "case_id": "multiturn-assistant-region-is-not-user-scope",
+      "family": "multiturn:provenance",
+      "turn": 2,
+      "message": "那退货运费由谁承担？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "rewrite",
+      "decision": "raw",
+      "decision_correct": false,
+      "query_correct": false,
+      "query": "那退货运费由谁承担？",
+      "oracle_query": "欧盟售后政策：那退货运费由谁承担？",
+      "oracle_query_correct": true,
+      "retrieval_queries": {
+        "raw": "那退货运费由谁承担？",
+        "predicted_dst": "那退货运费由谁承担？",
+        "gold_dst": "欧盟售后政策：那退货运费由谁承担？",
+        "human_rewrite": "欧盟退货的跨境运费由谁承担？"
+      },
+      "retrieval": {
+        "raw": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 0.6309297535714574,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "predicted_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 0.6309297535714574,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "gold_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "human_rewrite": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        }
+      }
+    },
+    {
+      "case_id": "multiturn-complete-policy-does-not-rewrite",
+      "family": "multiturn:rewrite-gate",
+      "turn": 0,
+      "message": "我想问美国市场的售后规则。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "我想问美国市场的售后规则。"
+    },
+    {
+      "case_id": "multiturn-complete-policy-does-not-rewrite",
+      "family": "multiturn:rewrite-gate",
+      "turn": 1,
+      "message": "欧盟定制商品适用无理由退货吗？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "欧盟定制商品适用无理由退货吗？"
+    },
+    {
+      "case_id": "multiturn-rewrite-korean-window",
+      "family": "multiturn:policy-inheritance",
+      "turn": 0,
+      "message": "我只想了解韩国市场的政策。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "我只想了解韩国市场的政策。"
+    },
+    {
+      "case_id": "multiturn-rewrite-korean-window",
+      "family": "multiturn:policy-inheritance",
+      "turn": 1,
+      "message": "那普通商品多久能退？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "rewrite",
+      "decision": "raw",
+      "decision_correct": false,
+      "query_correct": false,
+      "query": "那普通商品多久能退？",
+      "oracle_query": "韩国售后政策：那普通商品多久能退？",
+      "oracle_query_correct": true,
+      "retrieval_queries": {
+        "raw": "那普通商品多久能退？",
+        "predicted_dst": "那普通商品多久能退？",
+        "gold_dst": "韩国售后政策：那普通商品多久能退？",
+        "human_rewrite": "韩国普通商品签收后无理由退货期限多久？"
+      },
+      "retrieval": {
+        "raw": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 0.6309297535714574,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "predicted_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 0.6309297535714574,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "gold_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "human_rewrite": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        }
+      }
+    },
+    {
+      "case_id": "multiturn-rewrite-us-shipping",
+      "family": "multiturn:policy-inheritance",
+      "turn": 0,
+      "message": "我先了解一下美国市场的退货政策。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "我先了解一下美国市场的退货政策。"
+    },
+    {
+      "case_id": "multiturn-rewrite-us-shipping",
+      "family": "multiturn:policy-inheritance",
+      "turn": 1,
+      "message": "那主观原因退货运费呢？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "rewrite",
+      "decision": "rewrite",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "美国售后政策：那主观原因退货运费呢？",
+      "oracle_query": "美国售后政策：那主观原因退货运费呢？",
+      "oracle_query_correct": true,
+      "retrieval_queries": {
+        "raw": "那主观原因退货运费呢？",
+        "predicted_dst": "美国售后政策：那主观原因退货运费呢？",
+        "gold_dst": "美国售后政策：那主观原因退货运费呢？",
+        "human_rewrite": "美国主观原因退货时，退货运费谁承担？"
+      },
+      "retrieval": {
+        "raw": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "predicted_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "gold_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "human_rewrite": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        }
+      }
+    },
+    {
+      "case_id": "multiturn-rewrite-australia-alias",
+      "family": "multiturn:policy-inheritance",
+      "turn": 0,
+      "message": "澳大利亚市场普通售后的政策是什么？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "澳大利亚市场普通售后的政策是什么？"
+    },
+    {
+      "case_id": "multiturn-rewrite-australia-alias",
+      "family": "multiturn:policy-inheritance",
+      "turn": 1,
+      "message": "那非质量问题的退货窗口呢？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "rewrite",
+      "decision": "rewrite",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "澳洲售后政策：那非质量问题的退货窗口呢？",
+      "oracle_query": "澳洲售后政策：那非质量问题的退货窗口呢？",
+      "oracle_query_correct": true,
+      "retrieval_queries": {
+        "raw": "那非质量问题的退货窗口呢？",
+        "predicted_dst": "澳洲售后政策：那非质量问题的退货窗口呢？",
+        "gold_dst": "澳洲售后政策：那非质量问题的退货窗口呢？",
+        "human_rewrite": "澳洲非质量问题普通退货窗口是多久？"
+      },
+      "retrieval": {
+        "raw": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "predicted_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "gold_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "human_rewrite": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        }
+      }
+    },
+    {
+      "case_id": "multiturn-rewrite-payment-channel",
+      "family": "multiturn:policy-inheritance",
+      "turn": 0,
+      "message": "我想了解信用卡退款。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "我想了解信用卡退款。"
+    },
+    {
+      "case_id": "multiturn-rewrite-payment-channel",
+      "family": "multiturn:policy-inheritance",
+      "turn": 1,
+      "message": "那发起以后通常多久能到账？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "rewrite",
+      "decision": "raw",
+      "decision_correct": false,
+      "query_correct": false,
+      "query": "那发起以后通常多久能到账？",
+      "oracle_query": "那发起以后通常多久能到账？",
+      "oracle_query_correct": false,
+      "retrieval_queries": {
+        "raw": "那发起以后通常多久能到账？",
+        "predicted_dst": "那发起以后通常多久能到账？",
+        "gold_dst": "那发起以后通常多久能到账？",
+        "human_rewrite": "信用卡退款在平台发起后通常多久到账？"
+      },
+      "retrieval": {
+        "raw": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 0.6309297535714574,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "predicted_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 0.6309297535714574,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "gold_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 0.6309297535714574,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "human_rewrite": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        }
+      }
+    },
+    {
+      "case_id": "multiturn-rewrite-elliptical-topic",
+      "family": "multiturn:policy-inheritance",
+      "turn": 0,
+      "message": "日本地区的普通商品退货窗口多久？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "日本地区的普通商品退货窗口多久？"
+    },
+    {
+      "case_id": "multiturn-rewrite-elliptical-topic",
+      "family": "multiturn:policy-inheritance",
+      "turn": 1,
+      "message": "那它呢？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "rewrite",
+      "decision": "rewrite",
+      "decision_correct": true,
+      "query_correct": false,
+      "query": "日本售后政策：那它呢？",
+      "oracle_query": "日本售后政策：那它呢？",
+      "oracle_query_correct": false,
+      "retrieval_queries": {
+        "raw": "那它呢？",
+        "predicted_dst": "日本售后政策：那它呢？",
+        "gold_dst": "日本售后政策：那它呢？",
+        "human_rewrite": "日本地区普通商品的退货窗口多久？"
+      },
+      "retrieval": {
+        "raw": {
+          "recall_at_5": 0.0,
+          "ndcg_at_5": 0.0,
+          "complete_evidence": 0,
+          "rerank_status": "success"
+        },
+        "predicted_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "gold_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "human_rewrite": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        }
+      }
+    },
+    {
+      "case_id": "multiturn-rewrite-new-policy-focus",
+      "family": "multiturn:policy-inheritance",
+      "turn": 0,
+      "message": "美国普通商品怎么退？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "美国普通商品怎么退？"
+    },
+    {
+      "case_id": "multiturn-rewrite-new-policy-focus",
+      "family": "multiturn:policy-inheritance",
+      "turn": 1,
+      "message": "改问欧盟的无理由退货政策。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "改问欧盟的无理由退货政策。"
+    },
+    {
+      "case_id": "multiturn-rewrite-new-policy-focus",
+      "family": "multiturn:policy-inheritance",
+      "turn": 2,
+      "message": "那定制商品能退吗？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "rewrite",
+      "decision": "rewrite",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "欧盟售后政策：那定制商品能退吗？",
+      "oracle_query": "欧盟售后政策：那定制商品能退吗？",
+      "oracle_query_correct": true,
+      "retrieval_queries": {
+        "raw": "那定制商品能退吗？",
+        "predicted_dst": "欧盟售后政策：那定制商品能退吗？",
+        "gold_dst": "欧盟售后政策：那定制商品能退吗？",
+        "human_rewrite": "欧盟定制商品是否适用无理由退货？"
+      },
+      "retrieval": {
+        "raw": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 0.6309297535714574,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "predicted_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "gold_dst": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        },
+        "human_rewrite": {
+          "recall_at_5": 1.0,
+          "ndcg_at_5": 1.0,
+          "complete_evidence": 1,
+          "rerank_status": "success"
+        }
+      }
+    },
+    {
+      "case_id": "multiturn-rewrite-two-markets-ambiguous",
+      "family": "multiturn:ambiguity",
+      "turn": 0,
+      "message": "我同时在看欧盟和韩国的退货政策。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "我同时在看欧盟和韩国的退货政策。"
+    },
+    {
+      "case_id": "multiturn-rewrite-two-markets-ambiguous",
+      "family": "multiturn:ambiguity",
+      "turn": 1,
+      "message": "那签收后到底给多少天？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "clarify",
+      "intent": "rag_qa",
+      "expected_decision": "clarify",
+      "decision": "raw",
+      "decision_correct": false,
+      "query_correct": false
+    },
+    {
+      "case_id": "multiturn-rewrite-compare-explicit",
+      "family": "multiturn:rewrite-gate",
+      "turn": 0,
+      "message": "刚才谈了美国市场的规则。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "刚才谈了美国市场的规则。"
+    },
+    {
+      "case_id": "multiturn-rewrite-compare-explicit",
+      "family": "multiturn:rewrite-gate",
+      "turn": 1,
+      "message": "比较欧盟和韩国普通商品的无理由退货期限。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "比较欧盟和韩国普通商品的无理由退货期限。"
+    },
+    {
+      "case_id": "multiturn-ticket-reference",
+      "family": "multiturn:ticket-context",
+      "turn": 0,
+      "message": "查询工单 TK123456789012ABCD 的状态。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false,
+        "ticket_no": "TK123456789012ABCD"
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false,
+        "ticket_no": "TK123456789012ABCD"
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true,
+        "ticket_no": true
+      },
+      "jga": true,
+      "expected_intent": "ticket_query",
+      "intent": "ticket_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-ticket-reference",
+      "family": "multiturn:ticket-context",
+      "turn": 1,
+      "message": "那这个工单的进度呢？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false,
+        "ticket_no": "TK123456789012ABCD"
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false,
+        "ticket_no": "TK123456789012ABCD"
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true,
+        "ticket_no": true
+      },
+      "jga": true,
+      "expected_intent": "ticket_query",
+      "intent": "ticket_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-ticket-order-scope",
+      "family": "multiturn:ticket-context",
+      "turn": 0,
+      "message": "查一下 ORDER92101 的物流。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-ticket-order-scope",
+      "family": "multiturn:ticket-context",
+      "turn": 1,
+      "message": "另查工单 TK123456789012ABCD 的状态。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false,
+        "ticket_no": "TK123456789012ABCD"
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false,
+        "ticket_no": "TK123456789012ABCD"
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true,
+        "ticket_no": true
+      },
+      "jga": true,
+      "expected_intent": "ticket_query",
+      "intent": "ticket_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-ticket-order-scope",
+      "family": "multiturn:ticket-context",
+      "turn": 2,
+      "message": "回到这单，它发货了吗？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-ticket-correction",
+      "family": "multiturn:ticket-context",
+      "turn": 0,
+      "message": "查询工单 TK123456789012ABCD 的状态。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false,
+        "ticket_no": "TK123456789012ABCD"
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false,
+        "ticket_no": "TK123456789012ABCD"
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true,
+        "ticket_no": true
+      },
+      "jga": true,
+      "expected_intent": "ticket_query",
+      "intent": "ticket_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-ticket-correction",
+      "family": "multiturn:ticket-context",
+      "turn": 1,
+      "message": "工单号说错了，应该是 TK999999999999ABCD，查状态。",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false,
+        "ticket_no": "TK999999999999ABCD"
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false,
+        "ticket_no": "TK999999999999ABCD"
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true,
+        "ticket_no": true
+      },
+      "jga": true,
+      "expected_intent": "ticket_query",
+      "intent": "ticket_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-ticket-correction",
+      "family": "multiturn:ticket-context",
+      "turn": 2,
+      "message": "这个工单的进度如何？",
+      "expected_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false,
+        "ticket_no": "TK999999999999ABCD"
+      },
+      "predicted_slots": {
+        "active_order": null,
+        "order_no": null,
+        "ambiguous_order": false,
+        "ticket_no": "TK999999999999ABCD"
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true,
+        "ticket_no": true
+      },
+      "jga": true,
+      "expected_intent": "ticket_query",
+      "intent": "ticket_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-long-history",
+      "family": "multiturn:long-history",
+      "turn": 0,
+      "message": "查一下 ORDER92101 的物流。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    },
+    {
+      "case_id": "multiturn-long-history",
+      "family": "multiturn:long-history",
+      "turn": 2,
+      "message": "介绍一下标准物流核查规则。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "介绍一下标准物流核查规则。"
+    },
+    {
+      "case_id": "multiturn-long-history",
+      "family": "multiturn:long-history",
+      "turn": 4,
+      "message": "介绍一下清关延迟。",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "介绍一下清关延迟。"
+    },
+    {
+      "case_id": "multiturn-long-history",
+      "family": "multiturn:long-history",
+      "turn": 6,
+      "message": "有哪些特殊品类政策？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "有哪些特殊品类政策？"
+    },
+    {
+      "case_id": "multiturn-long-history",
+      "family": "multiturn:long-history",
+      "turn": 8,
+      "message": "信用卡退款通常多久？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": null,
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "rag_qa",
+      "intent": "rag_qa",
+      "expected_decision": "raw",
+      "decision": "raw",
+      "decision_correct": true,
+      "query_correct": true,
+      "query": "信用卡退款通常多久？"
+    },
+    {
+      "case_id": "multiturn-long-history",
+      "family": "multiturn:long-history",
+      "turn": 10,
+      "message": "回到刚才这单，它到哪了？",
+      "expected_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "predicted_slots": {
+        "active_order": "ORDER92101",
+        "order_no": "ORDER92101",
+        "ambiguous_order": false
+      },
+      "slot_results": {
+        "active_order": true,
+        "order_no": true,
+        "ambiguous_order": true
+      },
+      "jga": true,
+      "expected_intent": "order_query",
+      "intent": "order_query",
+      "expected_decision": "skip",
+      "decision": "skip",
+      "decision_correct": true,
+      "query_correct": true
+    }
+  ]
+}

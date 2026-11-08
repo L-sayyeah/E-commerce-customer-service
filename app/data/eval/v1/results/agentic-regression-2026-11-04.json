@@ -1,0 +1,962 @@
+{
+  "固定 Top-5": {
+    "summary": {
+      "n": 18,
+      "generation_errors": 0,
+      "judge_errors": 0,
+      "judge_missing_ratings": {
+        "faithfulness": 18,
+        "answer_relevancy": 18,
+        "answer_correctness": 18
+      },
+      "p95_ms": 8674,
+      "mean_sources": 5,
+      "agentic_routes": 0,
+      "rerank_fallbacks": 0,
+      "metrics": {
+        "precision_at_5": {
+          "n": 18,
+          "mean": 0.3888888888888889
+        },
+        "recall_at_5": {
+          "n": 18,
+          "mean": 0.9444444444444444
+        },
+        "ndcg_at_5": {
+          "n": 18,
+          "mean": 0.9263073766922059
+        },
+        "mrr_at_5": {
+          "n": 18,
+          "mean": 0.9722222222222222
+        },
+        "context_precision": {
+          "n": 18,
+          "mean": 0.3888888888888889
+        },
+        "context_recall": {
+          "n": 18,
+          "mean": 0.9444444444444444
+        },
+        "complete_evidence": {
+          "n": 18,
+          "mean": 0.8888888888888888
+        },
+        "faithfulness": {
+          "n": 0,
+          "mean": null
+        },
+        "answer_relevancy": {
+          "n": 0,
+          "mean": null
+        },
+        "answer_correctness": {
+          "n": 0,
+          "mean": null
+        }
+      }
+    },
+    "cases": [
+      {
+        "id": "dev-policy-010",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 7135,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-013",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 2511,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-017",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 4260,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-018",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 4667,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-019",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 5114,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-020",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 4344,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-013",
+        "complete_evidence": 0,
+        "context_recall": 0.5,
+        "latency_ms": 6493,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-014",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 2991,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-015",
+        "complete_evidence": 0,
+        "context_recall": 0.5,
+        "latency_ms": 3238,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-016",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3113,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-017",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3630,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-018",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3270,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-019",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 4793,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-020",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 5077,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-021",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3461,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-022",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3412,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-023",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3038,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-024",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 8674,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      }
+    ]
+  },
+  "仅修分流和截断": {
+    "summary": {
+      "n": 18,
+      "generation_errors": 0,
+      "judge_errors": 0,
+      "judge_missing_ratings": {
+        "faithfulness": 18,
+        "answer_relevancy": 18,
+        "answer_correctness": 18
+      },
+      "p95_ms": 24430,
+      "mean_sources": 3.2777777777777777,
+      "agentic_routes": 9,
+      "rerank_fallbacks": 0,
+      "metrics": {
+        "precision_at_5": {
+          "n": 18,
+          "mean": 0.34444444444444444
+        },
+        "recall_at_5": {
+          "n": 18,
+          "mean": 0.8425925925925926
+        },
+        "ndcg_at_5": {
+          "n": 18,
+          "mean": 0.8732380763029595
+        },
+        "mrr_at_5": {
+          "n": 18,
+          "mean": 1.0
+        },
+        "context_precision": {
+          "n": 18,
+          "mean": 0.6648148148148149
+        },
+        "context_recall": {
+          "n": 18,
+          "mean": 0.8425925925925926
+        },
+        "complete_evidence": {
+          "n": 18,
+          "mean": 0.6666666666666666
+        },
+        "faithfulness": {
+          "n": 0,
+          "mean": null
+        },
+        "answer_relevancy": {
+          "n": 0,
+          "mean": null
+        },
+        "answer_correctness": {
+          "n": 0,
+          "mean": null
+        }
+      }
+    },
+    "cases": [
+      {
+        "id": "dev-policy-010",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 7261,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-013",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3307,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-017",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 6081,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-018",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 5046,
+        "route": "agentic",
+        "planned_questions": 2,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-019",
+        "complete_evidence": 0,
+        "context_recall": 0.5,
+        "latency_ms": 24430,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-020",
+        "complete_evidence": 0,
+        "context_recall": 0.6666666666666666,
+        "latency_ms": 5186,
+        "route": "agentic",
+        "planned_questions": 2,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-013",
+        "complete_evidence": 0,
+        "context_recall": 0.5,
+        "latency_ms": 3874,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-014",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 2393,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-015",
+        "complete_evidence": 0,
+        "context_recall": 0.5,
+        "latency_ms": 10152,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-016",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3804,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-017",
+        "complete_evidence": 0,
+        "context_recall": 0.5,
+        "latency_ms": 16715,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-018",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3512,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-019",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 16769,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-020",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 2939,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-021",
+        "complete_evidence": 0,
+        "context_recall": 0.5,
+        "latency_ms": 18402,
+        "route": "agentic",
+        "planned_questions": 2,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-022",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 10201,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-023",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3159,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-024",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3678,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      }
+    ]
+  },
+  "保留基础证据并补查（35 秒预算）": {
+    "summary": {
+      "n": 18,
+      "generation_errors": 0,
+      "judge_errors": 0,
+      "judge_missing_ratings": {
+        "faithfulness": 18,
+        "answer_relevancy": 18,
+        "answer_correctness": 18
+      },
+      "p95_ms": 42805,
+      "mean_sources": 4.944444444444445,
+      "agentic_routes": 9,
+      "rerank_fallbacks": 0,
+      "metrics": {
+        "precision_at_5": {
+          "n": 18,
+          "mean": 0.3888888888888889
+        },
+        "recall_at_5": {
+          "n": 18,
+          "mean": 0.9444444444444444
+        },
+        "ndcg_at_5": {
+          "n": 18,
+          "mean": 0.9263073766922059
+        },
+        "mrr_at_5": {
+          "n": 18,
+          "mean": 0.9722222222222222
+        },
+        "context_precision": {
+          "n": 18,
+          "mean": 0.4111111111111111
+        },
+        "context_recall": {
+          "n": 18,
+          "mean": 0.9722222222222222
+        },
+        "complete_evidence": {
+          "n": 18,
+          "mean": 0.9444444444444444
+        },
+        "faithfulness": {
+          "n": 0,
+          "mean": null
+        },
+        "answer_relevancy": {
+          "n": 0,
+          "mean": null
+        },
+        "answer_correctness": {
+          "n": 0,
+          "mean": null
+        }
+      }
+    },
+    "cases": [
+      {
+        "id": "dev-policy-010",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 4590,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-013",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 5124,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-017",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 7522,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-018",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 5247,
+        "route": "agentic",
+        "planned_questions": 2,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-019",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 33689,
+        "route": "agentic",
+        "planned_questions": 2,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-020",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 6616,
+        "route": "agentic",
+        "planned_questions": 2,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-013",
+        "complete_evidence": 0,
+        "context_recall": 0.5,
+        "latency_ms": 3368,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-014",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3106,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-015",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 26504,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": 1,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-016",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 2955,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-017",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 12341,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-018",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3133,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-019",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 42805,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-020",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3192,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-021",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 31964,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-022",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 16122,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-023",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 4061,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-024",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 6591,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      }
+    ]
+  },
+  "保留基础证据并补查（15 秒预算）": {
+    "summary": {
+      "n": 18,
+      "generation_errors": 0,
+      "judge_errors": 0,
+      "judge_missing_ratings": {
+        "faithfulness": 18,
+        "answer_relevancy": 18,
+        "answer_correctness": 18
+      },
+      "p95_ms": 19887,
+      "mean_sources": 4.944444444444445,
+      "agentic_routes": 7,
+      "rerank_fallbacks": 0,
+      "metrics": {
+        "precision_at_5": {
+          "n": 18,
+          "mean": 0.3888888888888889
+        },
+        "recall_at_5": {
+          "n": 18,
+          "mean": 0.9444444444444444
+        },
+        "ndcg_at_5": {
+          "n": 18,
+          "mean": 0.9263073766922059
+        },
+        "mrr_at_5": {
+          "n": 18,
+          "mean": 0.9722222222222222
+        },
+        "context_precision": {
+          "n": 18,
+          "mean": 0.4111111111111111
+        },
+        "context_recall": {
+          "n": 18,
+          "mean": 0.9722222222222222
+        },
+        "complete_evidence": {
+          "n": 18,
+          "mean": 0.9444444444444444
+        },
+        "faithfulness": {
+          "n": 0,
+          "mean": null
+        },
+        "answer_relevancy": {
+          "n": 0,
+          "mean": null
+        },
+        "answer_correctness": {
+          "n": 0,
+          "mean": null
+        }
+      }
+    },
+    "cases": [
+      {
+        "id": "dev-policy-010",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 8597,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-013",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3923,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-017",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 8302,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-018",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 6531,
+        "route": "agentic",
+        "planned_questions": 2,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "dev-policy-019",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 19887,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": "baseline_check_unavailable"
+      },
+      {
+        "id": "dev-policy-020",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 7037,
+        "route": "agentic",
+        "planned_questions": 2,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-013",
+        "complete_evidence": 0,
+        "context_recall": 0.5,
+        "latency_ms": 5801,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-014",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 2637,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-015",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 19864,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": 1,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-016",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 2805,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-017",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 16656,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": "baseline_check_unavailable"
+      },
+      {
+        "id": "review-policy-018",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3853,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-019",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 19359,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-020",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 3630,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-021",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 12005,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-022",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 19019,
+        "route": "agentic",
+        "planned_questions": 3,
+        "supplemental_sources": 0,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-023",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 2529,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      },
+      {
+        "id": "review-policy-024",
+        "complete_evidence": 1,
+        "context_recall": 1.0,
+        "latency_ms": 4314,
+        "route": "ordinary",
+        "planned_questions": null,
+        "supplemental_sources": null,
+        "fallback_reason": null
+      }
+    ]
+  }
+}
