@@ -9,3 +9,4 @@ __pycache__/
 logs/
 app/logs/
 .idea/
+.DS_Store
