@@ -1,0 +1,16 @@
+name: custom-service-agent
+
+services:
+  app:
+    image: custom-service-agent:local
+    pull_policy: never
+    build:
+      context: .
+      args:
+        BASE_IMAGE: ${CUSTOM_SERVICE_BASE_IMAGE:-langchain-langgraph-rag:light}
+    env_file:
+      - .env.runtime
+    ports:
+      - "127.0.0.1:${CUSTOM_SERVICE_PORT:-8000}:8000"
+    init: true
+    restart: unless-stopped

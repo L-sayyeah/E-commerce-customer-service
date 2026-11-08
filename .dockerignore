@@ -1,0 +1,17 @@
+# Allow only runtime source and dependency files into the build context.
+**
+!Dockerfile
+!requirements.txt
+!alembic.ini
+!app/
+!app/**
+!migrations/
+!migrations/**
+**/__pycache__/
+**/*.py[cod]
+app/logs/
+app/data/ragas_test.py
+app/data/eval_*.json
+app/data/vector.json
+app/data/hybrid.json
+app/data/hybrid_with_rerank.json

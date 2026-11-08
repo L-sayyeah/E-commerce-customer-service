@@ -1,5 +1,7 @@
 # 跨境电商售后客服 Agent 系统
 
+本地 Docker 应用环境及远端 Tailscale 服务连接方式见 [RUNTIME.md](RUNTIME.md)。当前 `requirements.txt` 锁定的是 Python 3.11 / Linux ARM64 容器依赖，其他平台需重新解析依赖。
+
 ## 项目简介
 
 本项目是一个面向跨境电商售后场景的智能客服 Agent 后端系统，基于 FastAPI、LangGraph、LangChain、MySQL、Milvus、Elasticsearch、Rerank 和 Ragas 构建。
